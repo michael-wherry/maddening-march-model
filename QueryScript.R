@@ -14,3 +14,4 @@ csv[1]
 arena_coords <- read.csv("Data/arena coordinates.csv")
 
 # Team Coordinates for Power Rankings
+team_coords <- read.csv("Data/team coordinates.csv")
