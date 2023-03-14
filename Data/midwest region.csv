@@ -1,18 +1,69 @@
 ﻿Team,Arena,Tlat,Tlon,Alat,Alon
-Colgate University,Wells Fargo Arena Des Moines,42.8154037,-75.53958156,41.59250815,-93.62107232
+Colgate ,Wells Fargo Arena Des Moines,42.8154037,-75.53958156,41.59250815,-93.62107232
+Colgate ,Greensboro Coliseum Greensboro,42.8154037,-75.53958156,36.0440568,-79.84686958
+Colgate ,MVP Arena Albany,42.8154037,-75.53958156,42.6484107,-73.75475963
+Colgate ,Legacy Arena Birmingham,42.8154037,-75.53958156,33.5237958,-86.8128958
 University of Texas at Austin,Wells Fargo Arena Des Moines,30.2852198,-97.73389273,41.59250815,-93.62107232
-Penn State University,Wells Fargo Arena Des Moines,40.8025835,-77.85593833,41.59250815,-93.62107232
-Texas A&M University,Wells Fargo Arena Des Moines,30.618531,-96.336499,41.59250815,-93.62107232
-Kennesaw State University,Greensboro Coliseum Greensboro,34.0389231,-84.58318158,36.0440568,-79.84686958
-Xavier University,Greensboro Coliseum Greensboro,39.1513078,-84.47083471,36.0440568,-79.84686958
-University of Pittsburgh,Greensboro Coliseum Greensboro,40.44415295,-79.96243993,36.0440568,-79.84686958
-Mississippi State University,Greensboro Coliseum Greensboro,33.456799,-88.783787,36.0440568,-79.84686958
-Iowa State University,Greensboro Coliseum Greensboro,42.02790455,-93.64461297,36.0440568,-79.84686958
-Kent State University,MVP Arena Albany,41.1519,-81.416488,42.6484107,-73.75475963
-Indiana University,MVP Arena Albany,41.70456775,-86.23822026,42.6484107,-73.75475963
-Drake University,MVP Arena Albany,41.60307425,-93.65527532,42.6484107,-73.75475963
-University of Miami,MVP Arena Albany,25.7172788,-80.27869158,42.6484107,-73.75475963
-Auburn University,Legacy Arena Birmingham,32.5933574,-85.4951663,33.5237958,-86.8128958
-University of Iowa,Legacy Arena Birmingham,41.665901,-91.57318839,33.5237958,-86.8128958
-Northern Kentucky University,Legacy Arena Birmingham,39.0346853,-84.46595983,33.5237958,-86.8128958
-The University of Houston,Legacy Arena Birmingham,29.7029914,-95.4031517,33.5237958,-86.8128958
+University of Texas at Austin,Greensboro Coliseum Greensboro,30.2852198,-97.73389273,36.0440568,-79.84686958
+University of Texas at Austin,MVP Arena Albany,30.2852198,-97.73389273,42.6484107,-73.75475963
+University of Texas at Austin,Legacy Arena Birmingham,30.2852198,-97.73389273,33.5237958,-86.8128958
+Penn State ,Wells Fargo Arena Des Moines,40.8025835,-77.85593833,41.59250815,-93.62107232
+Penn State ,Greensboro Coliseum Greensboro,40.8025835,-77.85593833,36.0440568,-79.84686958
+Penn State ,MVP Arena Albany,40.8025835,-77.85593833,42.6484107,-73.75475963
+Penn State ,Legacy Arena Birmingham,40.8025835,-77.85593833,33.5237958,-86.8128958
+Texas A&M,Wells Fargo Arena Des Moines,30.618531,-96.336499,41.59250815,-93.62107232
+Texas A&M,Greensboro Coliseum Greensboro,30.618531,-96.336499,36.0440568,-79.84686958
+Texas A&M,MVP Arena Albany,30.618531,-96.336499,42.6484107,-73.75475963
+Texas A&M,Legacy Arena Birmingham,30.618531,-96.336499,33.5237958,-86.8128958
+Kennesaw State,Greensboro Coliseum Greensboro,34.0389231,-84.58318158,36.0440568,-79.84686958
+Kennesaw State,Wells Fargo Arena Des Moines,34.0389231,-84.58318158,41.59250815,-93.62107232
+Kennesaw State,MVP Arena Albany,34.0389231,-84.58318158,42.6484107,-73.75475963
+Kennesaw State,Legacy Arena Birmingham,34.0389231,-84.58318158,33.5237958,-86.8128958
+Xavier ,Greensboro Coliseum Greensboro,39.1513078,-84.47083471,36.0440568,-79.84686958
+Xavier ,Wells Fargo Arena Des Moines,39.1513078,-84.47083471,41.59250815,-93.62107232
+Xavier ,MVP Arena Albany,39.1513078,-84.47083471,42.6484107,-73.75475963
+Xavier ,Legacy Arena Birmingham,39.1513078,-84.47083471,33.5237958,-86.8128958
+Pittsburgh,Greensboro Coliseum Greensboro,40.44415295,-79.96243993,36.0440568,-79.84686958
+Pittsburgh,Wells Fargo Arena Des Moines,40.44415295,-79.96243993,41.59250815,-93.62107232
+Pittsburgh,MVP Arena Albany,40.44415295,-79.96243993,42.6484107,-73.75475963
+Pittsburgh,Legacy Arena Birmingham,40.44415295,-79.96243993,33.5237958,-86.8128958
+Mississippi State,Greensboro Coliseum Greensboro,33.456799,-88.783787,36.0440568,-79.84686958
+Mississippi State,Wells Fargo Arena Des Moines,33.456799,-88.783787,41.59250815,-93.62107232
+Mississippi State,MVP Arena Albany,33.456799,-88.783787,42.6484107,-73.75475963
+Mississippi State,Legacy Arena Birmingham,33.456799,-88.783787,33.5237958,-86.8128958
+Iowa State,Greensboro Coliseum Greensboro,42.02790455,-93.64461297,36.0440568,-79.84686958
+Iowa State,Wells Fargo Arena Des Moines,42.02790455,-93.64461297,41.59250815,-93.62107232
+Iowa State,MVP Arena Albany,42.02790455,-93.64461297,42.6484107,-73.75475963
+Iowa State,Legacy Arena Birmingham,42.02790455,-93.64461297,33.5237958,-86.8128958
+Kent State,MVP Arena Albany,41.1519,-81.416488,42.6484107,-73.75475963
+Kent State,Greensboro Coliseum Greensboro,41.1519,-81.416488,36.0440568,-79.84686958
+Kent State,Wells Fargo Arena Des Moines,41.1519,-81.416488,41.59250815,-93.62107232
+Kent State,Legacy Arena Birmingham,41.1519,-81.416488,33.5237958,-86.8128958
+Indiana,MVP Arena Albany,41.70456775,-86.23822026,42.6484107,-73.75475963
+Indiana,Greensboro Coliseum Greensboro,41.70456775,-86.23822026,36.0440568,-79.84686958
+Indiana,Wells Fargo Arena Des Moines,41.70456775,-86.23822026,41.59250815,-93.62107232
+Indiana,Legacy Arena Birmingham,41.70456775,-86.23822026,33.5237958,-86.8128958
+Drake,MVP Arena Albany,41.60307425,-93.65527532,42.6484107,-73.75475963
+Drake,Greensboro Coliseum Greensboro,41.60307425,-93.65527532,36.0440568,-79.84686958
+Drake,Wells Fargo Arena Des Moines,41.60307425,-93.65527532,41.59250815,-93.62107232
+Drake,Legacy Arena Birmingham,41.60307425,-93.65527532,33.5237958,-86.8128958
+Miami,MVP Arena Albany,25.7172788,-80.27869158,42.6484107,-73.75475963
+Miami,Greensboro Coliseum Greensboro,25.7172788,-80.27869158,36.0440568,-79.84686958
+Miami,Wells Fargo Arena Des Moines,25.7172788,-80.27869158,41.59250815,-93.62107232
+Miami,Legacy Arena Birmingham,25.7172788,-80.27869158,33.5237958,-86.8128958
+Auburn ,Legacy Arena Birmingham,32.5933574,-85.4951663,33.5237958,-86.8128958
+Auburn ,Greensboro Coliseum Greensboro,32.5933574,-85.4951663,36.0440568,-79.84686958
+Auburn ,Wells Fargo Arena Des Moines,32.5933574,-85.4951663,41.59250815,-93.62107232
+Auburn ,MVP Arena Albany,32.5933574,-85.4951663,42.6484107,-73.75475963
+Iowa,Legacy Arena Birmingham,41.665901,-91.57318839,33.5237958,-86.8128958
+Iowa,Greensboro Coliseum Greensboro,41.665901,-91.57318839,36.0440568,-79.84686958
+Iowa,Wells Fargo Arena Des Moines,41.665901,-91.57318839,41.59250815,-93.62107232
+Iowa,MVP Arena Albany,41.665901,-91.57318839,42.6484107,-73.75475963
+Northern Kentucky,Legacy Arena Birmingham,39.0346853,-84.46595983,33.5237958,-86.8128958
+Northern Kentucky,Greensboro Coliseum Greensboro,39.0346853,-84.46595983,36.0440568,-79.84686958
+Northern Kentucky,Wells Fargo Arena Des Moines,39.0346853,-84.46595983,41.59250815,-93.62107232
+Northern Kentucky,MVP Arena Albany,39.0346853,-84.46595983,42.6484107,-73.75475963
+Houston,Legacy Arena Birmingham,29.7029914,-95.4031517,33.5237958,-86.8128958
+Houston,Greensboro Coliseum Greensboro,29.7029914,-95.4031517,36.0440568,-79.84686958
+Houston,Wells Fargo Arena Des Moines,29.7029914,-95.4031517,41.59250815,-93.62107232
+Houston,MVP Arena Albany,29.7029914,-95.4031517,42.6484107,-73.75475963

@@ -1,18 +1,69 @@
 ﻿Team,Arena,Tlat,Tlon,Alat,Alon
-University of Alabama,Legacy Arena Birmingham,33.2140233,-87.5391418,33.5237958,-86.8128958
-University of Maryland,Legacy Arena Birmingham,38.978174,-76.928451,33.5237958,-86.8128958
-West Virginia University,Legacy Arena Birmingham,39.65404635,-79.96475355,33.5237958,-86.8128958
-Southeast Missouri State University,Legacy Arena Birmingham,37.3126218,-89.5311135,33.5237958,-86.8128958
-Texas A&M University at Corpus Christi,Legacy Arena Birmingham,27.71275135,-97.32338771,33.5237958,-86.8128958
-San Diego State University,Amway Center Orlando,32.7761529,-117.0733037,28.53927385,-81.38400714
-College of Charleston,Amway Center Orlando,32.7836117,-79.9371762,28.53927385,-81.38400714
-Furman University,Amway Center Orlando,34.92577435,-82.43852581,28.53927385,-81.38400714
-University of Virginia,Amway Center Orlando,38.0410576,-78.5054996,28.53927385,-81.38400714
-Princeton University,Golden 1 Center Sacramento,40.3439888,-74.6514481,38.58014045,-121.4995008
-University of Arizona,Golden 1 Center Sacramento,33.45205165,-112.0636789,38.58014045,-121.4995008
-Utah State University,Golden 1 Center Sacramento,41.7527021,-111.8087342,38.58014045,-121.4995008
-University of Missouri,Golden 1 Center Sacramento,38.94429415,-92.32647881,38.58014045,-121.4995008
+Alabama,Legacy Arena Birmingham,33.2140233,-87.5391418,33.5237958,-86.8128958
+Alabama,Amway Center Orlando,33.2140233,-87.5391418,28.53927385,-81.38400714
+Alabama,Ball Arena Denver,33.2140233,-87.5391418,39.7486838,-105.007544
+Alabama,Golden 1 Center Sacramento,33.2140233,-87.5391418,38.58014045,-121.4995008
+Maryland,Legacy Arena Birmingham,38.978174,-76.928451,33.5237958,-86.8128958
+Maryland,Amway Center Orlando,38.978174,-76.928451,28.53927385,-81.38400714
+Maryland,Ball Arena Denver,38.978174,-76.928451,39.7486838,-105.007544
+Maryland,Golden 1 Center Sacramento,38.978174,-76.928451,38.58014045,-121.4995008
+West Virginia,Legacy Arena Birmingham,39.65404635,-79.96475355,33.5237958,-86.8128958
+West Virginia,Amway Center Orlando,39.65404635,-79.96475355,28.53927385,-81.38400714
+West Virginia,Ball Arena Denver,39.65404635,-79.96475355,39.7486838,-105.007544
+West Virginia,Golden 1 Center Sacramento,39.65404635,-79.96475355,38.58014045,-121.4995008
+Southeast Missouri State,Legacy Arena Birmingham,37.3126218,-89.5311135,33.5237958,-86.8128958
+Southeast Missouri State,Amway Center Orlando,37.3126218,-89.5311135,28.53927385,-81.38400714
+Southeast Missouri State,Ball Arena Denver,37.3126218,-89.5311135,39.7486838,-105.007544
+Southeast Missouri State,Golden 1 Center Sacramento,37.3126218,-89.5311135,38.58014045,-121.4995008
+Texas A&M at Corpus Christi,Legacy Arena Birmingham,27.71275135,-97.32338771,33.5237958,-86.8128958
+Texas A&M at Corpus Christi,Amway Center Orlando,27.71275135,-97.32338771,28.53927385,-81.38400714
+Texas A&M at Corpus Christi,Ball Arena Denver,27.71275135,-97.32338771,39.7486838,-105.007544
+Texas A&M at Corpus Christi,Golden 1 Center Sacramento,27.71275135,-97.32338771,38.58014045,-121.4995008
+San Diego State ,Amway Center Orlando,32.7761529,-117.0733037,28.53927385,-81.38400714
+San Diego State ,Legacy Arena Birmingham,32.7761529,-117.0733037,33.5237958,-86.8128958
+San Diego State ,Ball Arena Denver,32.7761529,-117.0733037,39.7486838,-105.007544
+San Diego State ,Golden 1 Center Sacramento,32.7761529,-117.0733037,38.58014045,-121.4995008
+Charleston,Amway Center Orlando,32.7836117,-79.9371762,28.53927385,-81.38400714
+Charleston,Legacy Arena Birmingham,32.7836117,-79.9371762,33.5237958,-86.8128958
+Charleston,Ball Arena Denver,32.7836117,-79.9371762,39.7486838,-105.007544
+Charleston,Golden 1 Center Sacramento,32.7836117,-79.9371762,38.58014045,-121.4995008
+Furman ,Amway Center Orlando,34.92577435,-82.43852581,28.53927385,-81.38400714
+Furman ,Legacy Arena Birmingham,34.92577435,-82.43852581,33.5237958,-86.8128958
+Furman ,Ball Arena Denver,34.92577435,-82.43852581,39.7486838,-105.007544
+Furman ,Golden 1 Center Sacramento,34.92577435,-82.43852581,38.58014045,-121.4995008
+Virginia,Amway Center Orlando,38.0410576,-78.5054996,28.53927385,-81.38400714
+Virginia,Legacy Arena Birmingham,38.0410576,-78.5054996,33.5237958,-86.8128958
+Virginia,Ball Arena Denver,38.0410576,-78.5054996,39.7486838,-105.007544
+Virginia,Golden 1 Center Sacramento,38.0410576,-78.5054996,38.58014045,-121.4995008
+Princeton ,Golden 1 Center Sacramento,40.3439888,-74.6514481,38.58014045,-121.4995008
+Princeton ,Legacy Arena Birmingham,40.3439888,-74.6514481,33.5237958,-86.8128958
+Princeton ,Ball Arena Denver,40.3439888,-74.6514481,39.7486838,-105.007544
+Princeton ,Amway Center Orlando,40.3439888,-74.6514481,28.53927385,-81.38400714
+Arizona,Golden 1 Center Sacramento,33.45205165,-112.0636789,38.58014045,-121.4995008
+Arizona,Legacy Arena Birmingham,33.45205165,-112.0636789,33.5237958,-86.8128958
+Arizona,Ball Arena Denver,33.45205165,-112.0636789,39.7486838,-105.007544
+Arizona,Amway Center Orlando,33.45205165,-112.0636789,28.53927385,-81.38400714
+Utah State,Golden 1 Center Sacramento,41.7527021,-111.8087342,38.58014045,-121.4995008
+Utah State,Legacy Arena Birmingham,41.7527021,-111.8087342,33.5237958,-86.8128958
+Utah State,Ball Arena Denver,41.7527021,-111.8087342,39.7486838,-105.007544
+Utah State,Amway Center Orlando,41.7527021,-111.8087342,28.53927385,-81.38400714
+Missouri,Golden 1 Center Sacramento,38.94429415,-92.32647881,38.58014045,-121.4995008
+Missouri,Legacy Arena Birmingham,38.94429415,-92.32647881,33.5237958,-86.8128958
+Missouri,Ball Arena Denver,38.94429415,-92.32647881,39.7486838,-105.007544
+Missouri,Amway Center Orlando,38.94429415,-92.32647881,28.53927385,-81.38400714
 UC Santa Barbara,Ball Arena Denver,34.41460245,-119.84581,39.7486838,-105.007544
-Baylor University in Waco,Ball Arena Denver,31.5502965,-97.11712272,39.7486838,-105.007544
-North Carolina State University,Ball Arena Denver,36.037694,-79.035584,39.7486838,-105.007544
-Creighton University,Ball Arena Denver,41.26585655,-95.94505554,39.7486838,-105.007544
+UC Santa Barbara,Legacy Arena Birmingham,34.41460245,-119.84581,33.5237958,-86.8128958
+UC Santa Barbara,Golden 1 Center Sacramento,34.41460245,-119.84581,38.58014045,-121.4995008
+UC Santa Barbara,Amway Center Orlando,34.41460245,-119.84581,28.53927385,-81.38400714
+Baylor,Ball Arena Denver,31.5502965,-97.11712272,39.7486838,-105.007544
+Baylor,Legacy Arena Birmingham,31.5502965,-97.11712272,33.5237958,-86.8128958
+Baylor,Golden 1 Center Sacramento,31.5502965,-97.11712272,38.58014045,-121.4995008
+Baylor,Amway Center Orlando,31.5502965,-97.11712272,28.53927385,-81.38400714
+North Carolina State ,Ball Arena Denver,36.037694,-79.035584,39.7486838,-105.007544
+North Carolina State ,Legacy Arena Birmingham,36.037694,-79.035584,33.5237958,-86.8128958
+North Carolina State ,Golden 1 Center Sacramento,36.037694,-79.035584,38.58014045,-121.4995008
+North Carolina State ,Amway Center Orlando,36.037694,-79.035584,28.53927385,-81.38400714
+Creighton,Ball Arena Denver,41.26585655,-95.94505554,39.7486838,-105.007544
+Creighton,Legacy Arena Birmingham,41.26585655,-95.94505554,33.5237958,-86.8128958
+Creighton,Golden 1 Center Sacramento,41.26585655,-95.94505554,38.58014045,-121.4995008
+Creighton,Amway Center Orlando,41.26585655,-95.94505554,28.53927385,-81.38400714
