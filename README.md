@@ -1,2 +1,2 @@
 # maddening-march-model
-An ML model aiming to find the most likely winner of the 2023 March Madness tournament.
+This is a Machine Learning (ML) model designed to create a prediction on who can potentially be the champions for the 2023 NCAA March Madness tournament.
