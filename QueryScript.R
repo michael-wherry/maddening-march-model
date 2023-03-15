@@ -12,8 +12,7 @@ csv <- lapply(paste0("Data/", fnames), read.csv)
 result <- do.call(rbind, csv)
 csv
 
-csv[1]
-
+df_tournament <- read.csv("Data/MNCAATourneyDetailedResults.csv")
 # Arena Coordinates for Power Rankings
 arena_coords <- read.csv("Data/arena coordinates.csv")
 
@@ -22,11 +21,13 @@ team_coords <- read.csv("Data/team coordinates.csv")
 
 #combined team and arena coords to calculate distance
 east_coords <- read.csv("Data/east region.csv")
-east_coords =
-  east_coords %>%
+east_coords <- east_coords %>%
   dplyr::rowwise() %>%
   mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
   mutate(distance = distance * 0.00062137)
+
+filter(arena_coords, Arena == "NRG Stadium Houston")[, "Latitude"]
+
 
 # Power ranking based on region
 average_east_dist <- east_coords %>%
@@ -34,8 +35,7 @@ average_east_dist <- east_coords %>%
   summarize(avg_dist = mean(distance))
 
 west_coords <- read.csv("Data/west region.csv")
-west_coords =
-  west_coords %>%
+west_coords <- west_coords %>%
   dplyr::rowwise() %>%
   mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
   mutate(distance = distance * 0.00062137) %>%
@@ -47,8 +47,7 @@ average_west_dist <- west_coords %>%
   summarize(avg_dist = mean(distance))
 
 midwest_coords <- read.csv("Data/midwest region.csv")
-midwest_coords =
-  midwest_coords %>%
+midwest_coords <- midwest_coords %>%
   dplyr::rowwise() %>%
   mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
   mutate(distance = distance * 0.00062137) %>%
@@ -60,8 +59,7 @@ average_midwest_dist <- midwest_coords %>%
   summarize(avg_dist = mean(distance))
 
 south_coords <- read.csv("Data/south region.csv")
-south_coords =
-  south_coords %>%
+south_coords <- south_coords %>%
   dplyr::rowwise() %>%
   mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
   mutate(distance = distance * 0.00062137) %>%
