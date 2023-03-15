@@ -22,6 +22,15 @@ df_tournament <- df_tournament %>%
   mutate(Date =  as.Date(paste(Season, Month, Day, sep = "/"))) %>%
   select(Date, Season, Month, Day, everything(), -DayNum)
 
+#Key in team name with team id
+df_historical_data <- df_tournament %>%
+  left_join(teams_id_name, by = c("WTeamID" = "TeamID")) %>%
+  select(-FirstD1Season, -LastD1Season) %>%
+  rename(WTeam = TeamName) %>%
+  left_join(teams_id_name, by = c("LTeamID" = "TeamID")) %>%
+  select(-FirstD1Season, -LastD1Season) %>%
+  rename(LTeam = TeamName)
+
 # Arena Coordinates for Power Rankings
 arena_coords <- read.csv("Data/arena coordinates.csv")
 
