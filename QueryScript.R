@@ -15,6 +15,25 @@ result <- do.call(rbind, csv)
 
 df_tournament <- read.csv("Data/MNCAATourneyDetailedResults.csv")
 
+Team_data <- read.csv("brosius data/Tournament Team Data (Including 2023).csv")
+
+kenpom_before_2023 <- Team_data %>%
+  filter(YEAR < 2023)
+
+set.seed(123) # Set seed for reproducibility
+train_index <- sample(nrow(kenpom_before_2023), 0.8 * nrow(kenpom_before_2023)) # 80% for training
+train_data <- kenpom_before_2023[train_index, ] # Training data
+test_data <- kenpom_before_2023[-train_index, ] # Testing data
+x <- select(train_data, -KENPOM.ADJUSTED.EFFICIENCY) 
+y <- select(train_data, KENPOM.ADJUSTED.EFFICIENCY)
+
+svm_model <- svm(KENPOM.ADJUSTED.EFFICIENCY ~ ., data = train_data, kernel = "linear", cost = 10)
+
+predictions <- fitted(svm_model) 
+
+east_region <- Team_data %>%
+  arrange(SEED)
+  
 #Create valid date column
 df_tournament <- df_tournament %>%
   mutate(Day = lubridate::day(as.Date(DayNum, origin = paste0(Season, "-01-01")))) %>%
@@ -42,36 +61,20 @@ east_coords <- read.csv("Data/east region.csv")
 east_coords <- east_coords %>%
   dplyr::rowwise() %>%
   mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
-  mutate(distance = distance * 0.00062137)
-
-# Power ranking based on region
-average_east_dist <- east_coords %>%
-  group_by(Team) %>%
-  summarize(avg_dist = mean(distance))
+  mutate(distance = distance * 0.00062137) %>%
+  left_join(kenpom_2023, by = c("Team" = "Team"))
 
 west_coords <- read.csv("Data/west region.csv")
 west_coords <- west_coords %>%
   dplyr::rowwise() %>%
   mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
-  mutate(distance = distance * 0.00062137) %>%
-  arrange(distance)
-
-# Power rankings based on region
-average_west_dist <- west_coords %>%
-  group_by(Team) %>%
-  summarize(avg_dist = mean(distance))
+  mutate(distance = distance * 0.00062137)
 
 midwest_coords <- read.csv("Data/midwest region.csv")
 midwest_coords <- midwest_coords %>%
   dplyr::rowwise() %>%
   mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
-  mutate(distance = distance * 0.00062137) %>%
-  arrange(distance)
-
-# Power region based on region
-average_midwest_dist <- midwest_coords %>%
-  group_by(Team) %>%
-  summarize(avg_dist = mean(distance))
+  mutate(distance = distance * 0.00062137)
 
 south_coords <- read.csv("Data/south region.csv")
 south_coords <- south_coords %>%
@@ -80,13 +83,9 @@ south_coords <- south_coords %>%
   mutate(distance = distance * 0.00062137) %>%
   arrange(distance)
 
-# Power rankings based on region
-average_south_dist <- south_coords %>%
-  group_by(Team) %>%
-  summarize(avg_dist = mean(distance))
-
 # Combine all regions into one data frame
 combined_team_dist <- rbind(east_coords, west_coords, midwest_coords, south_coords)
 
 # place in ascending order for power rankings
 power_rankings <- combined_team_dist[order(combined_team_dist$distance), ]
+
