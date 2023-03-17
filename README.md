@@ -7,4 +7,4 @@ This is a Machine Learning (ML) model designed to create a prediction on who can
 
 -The distance from a team's campus to the stadium the match is being held
 
--Previous scores from macthups using historical data between 1985 and 2023
+-Previous scores from historical matchup data from 1985 to 2023
