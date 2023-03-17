@@ -73,7 +73,8 @@ east_metrics <- east_coords %>%
   mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
   mutate(distance = distance * 0.00062137) %>%
   left_join(east_region, by = c("Team" = "TEAM")) %>%
-  select(-YEAR,-ROUND, -TEAM.1)
+  select(-YEAR,-ROUND, -TEAM.1, -Tlat, -Tlon, -Alat, -Alon) %>%
+  arrange(SEED)
 
 west_coords <- read.csv("Data/west region.csv")
 west_metrics <- west_coords %>%
@@ -81,7 +82,8 @@ west_metrics <- west_coords %>%
   mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
   mutate(distance = distance * 0.00062137) %>%
   left_join(west_region, by = c("Team" = "TEAM")) %>%
-  select(-YEAR,-ROUND, -TEAM.1)
+  select(-YEAR,-ROUND, -TEAM.1,-Tlat, -Tlon, -Alat, -Alon) %>%
+  arrange(SEED)
 
 midwest_coords <- read.csv("Data/midwest region.csv")
 midwest_metrics <- midwest_coords %>%
@@ -89,7 +91,8 @@ midwest_metrics <- midwest_coords %>%
   mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
   mutate(distance = distance * 0.00062137) %>%
   left_join(midwest_region, by = c("Team" = "TEAM")) %>%
-  select(-YEAR,-ROUND, -TEAM.1)
+  select(-YEAR,-ROUND, -TEAM.1,-Tlat, -Tlon, -Alat, -Alon) %>%
+  arrange(SEED)
 
 south_coords <- read.csv("Data/south region.csv")
 south_metrics <- south_coords %>%
@@ -98,7 +101,8 @@ south_metrics <- south_coords %>%
   mutate(distance = distance * 0.00062137) %>%
   arrange(distance) %>%
   left_join(south_region, by = c("Team" = "TEAM")) %>%
-  select(-YEAR,-ROUND, -TEAM.1)
+  select(-YEAR,-ROUND, -TEAM.1,-Tlat, -Tlon, -Alat, -Alon) %>%
+  arrange(SEED)
 
 # Combine all regions into one data frame
 combined_team_dist <- rbind(east_coords, west_coords, midwest_coords, south_coords)
