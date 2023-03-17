@@ -4,8 +4,7 @@ library(lubridate)
 library(dplyr)
 library(ggplot2)
 library(e1071)
-install.packages("tidyverse")
-rm(list = ls())
+library(magrittr)
 
 # Make sure you set your working directory
 # An easy and temporary way to look through each csv
@@ -16,6 +15,9 @@ result <- do.call(rbind, csv)
 df_tournament <- read.csv("Data/MNCAATourneyDetailedResults.csv")
 
 Team_data <- read.csv("brosius data/Tournament Team Data (Including 2023).csv")
+
+Current_team_data <- Team_data %>%
+  filter(YEAR > 2022)
 
 kenpom_before_2023 <- Team_data %>%
   filter(YEAR < 2023)
@@ -31,9 +33,17 @@ svm_model <- svm(KENPOM.ADJUSTED.EFFICIENCY ~ ., data = train_data, kernel = "li
 
 predictions <- fitted(svm_model) 
 
-east_region <- Team_data %>%
+east_region <- Current_team_data[c(4,6,11,15,17,23,25,32,34,39,46,49,54,57,62,63,68),] %>%
   arrange(SEED)
-  
+
+south_region <- Current_team_data[c(1,5,9,16,20,21,26,31,36,40,44,47,51,58,60,67,66),] %>%
+  arrange(SEED)
+
+midwest_region <- Current_team_data[c(2,7,12,14,18,22,28,30,33,38,45,48,53,56,59,65,42),] %>%
+  arrange(SEED)
+
+west_region <- Current_team_data[c(3,8,10,13,19,24,27,29,35,37,41,50,52,55,61,64,43),] %>%
+  arrange(SEED)
 #Create valid date column
 df_tournament <- df_tournament %>%
   mutate(Day = lubridate::day(as.Date(DayNum, origin = paste0(Season, "-01-01")))) %>%
@@ -58,30 +68,37 @@ team_coords <- read.csv("Data/team coordinates.csv")
 
 #combined team and arena coords to calculate distance
 east_coords <- read.csv("Data/east region.csv")
-east_coords <- east_coords %>%
+east_metrics <- east_coords %>%
   dplyr::rowwise() %>%
   mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
   mutate(distance = distance * 0.00062137) %>%
-  left_join(kenpom_2023, by = c("Team" = "Team"))
+  left_join(east_region, by = c("Team" = "TEAM")) %>%
+  select(-YEAR,-ROUND, -TEAM.1)
 
 west_coords <- read.csv("Data/west region.csv")
-west_coords <- west_coords %>%
-  dplyr::rowwise() %>%
-  mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
-  mutate(distance = distance * 0.00062137)
-
-midwest_coords <- read.csv("Data/midwest region.csv")
-midwest_coords <- midwest_coords %>%
-  dplyr::rowwise() %>%
-  mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
-  mutate(distance = distance * 0.00062137)
-
-south_coords <- read.csv("Data/south region.csv")
-south_coords <- south_coords %>%
+west_metrics <- west_coords %>%
   dplyr::rowwise() %>%
   mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
   mutate(distance = distance * 0.00062137) %>%
-  arrange(distance)
+  left_join(west_region, by = c("Team" = "TEAM")) %>%
+  select(-YEAR,-ROUND, -TEAM.1)
+
+midwest_coords <- read.csv("Data/midwest region.csv")
+midwest_metrics <- midwest_coords %>%
+  dplyr::rowwise() %>%
+  mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
+  mutate(distance = distance * 0.00062137) %>%
+  left_join(midwest_region, by = c("Team" = "TEAM")) %>%
+  select(-YEAR,-ROUND, -TEAM.1)
+
+south_coords <- read.csv("Data/south region.csv")
+south_metrics <- south_coords %>%
+  dplyr::rowwise() %>%
+  mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
+  mutate(distance = distance * 0.00062137) %>%
+  arrange(distance) %>%
+  left_join(south_region, by = c("Team" = "TEAM")) %>%
+  select(-YEAR,-ROUND, -TEAM.1)
 
 # Combine all regions into one data frame
 combined_team_dist <- rbind(east_coords, west_coords, midwest_coords, south_coords)

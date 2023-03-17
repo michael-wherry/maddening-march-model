@@ -1,61 +1,89 @@
 ﻿Team,Arena,Tlat,Tlon,Alat,Alon
 Vermont,Nation Wide Arena Columbus,44.4737365,-73.1941468,39.969213,-83.006059
 Vermont,Greensboro Coliseum Greensboro,44.4737365,-73.1941468,36.0440568,-79.84686958
+Vermont,NRG Stadium Houston,44.4737365,-73.1941468,29.6848581,-95.41080145
+Vermont,Madison Square Garden,44.4737365,-73.1941468,40.7505045,-73.9934387
 Vermont,Amway Center Orlando,44.4737365,-73.1941468,28.53927385,-81.38400714
 Marquette,Nation Wide Arena Columbus,43.03888115,-87.93158327,39.969213,-83.006059
+Marquette,NRG Stadium Houston,43.03888115,-87.93158327,29.6848581,-95.41080145
+Marquette,Madison Square Garden,43.03888115,-87.93158327,40.7505045,-73.9934387
 Marquette,Greensboro Coliseum Greensboro,43.03888115,-87.93158327,36.0440568,-79.84686958
 Marquette,Amway Center Orlando,43.03888115,-87.93158327,28.53927385,-81.38400714
 USC,Nation Wide Arena Columbus,34.0218833,-118.2858666,39.969213,-83.006059
+USC,NRG Stadium Houston,34.0218833,-118.2858666,29.6848581,-95.41080145
+USC,Madison Square Garden,34.0218833,-118.2858666,40.7505045,-73.9934387
 USC,Greensboro Coliseum Greensboro,34.0218833,-118.2858666,36.0440568,-79.84686958
 USC,Amway Center Orlando,34.0218833,-118.2858666,28.53927385,-81.38400714
 Michigan St.,Nation Wide Arena Columbus,42.7024238,-84.48032838,39.969213,-83.006059
+Michigan St.,Madison Square Garden,42.7024238,-84.48032838,40.7505045,-73.9934387
+Michigan St.,NRG Stadium Houston,42.7024238,-84.48032838,29.6848581,-95.41080145
 Michigan St.,Greensboro Coliseum Greensboro,42.7024238,-84.48032838,36.0440568,-79.84686958
 Michigan St.,Amway Center Orlando,42.7024238,-84.48032838,28.53927385,-81.38400714
+Michigan St.,Madison Square Garden,42.7024238,-84.48032838,40.7505045,-73.9934387
 Montana St.,Greensboro Coliseum Greensboro,45.66381885,-111.0793057,36.0440568,-79.84686958
+Montana St.,NRG Stadium Houston,45.66381885,-111.0793057,29.6848581,-95.41080145
+Montana St.,Madison Square Garden,45.66381885,-111.0793057,40.7505045,-73.9934387
 Montana St.,Nation Wide Arena Columbus,45.66381885,-111.0793057,39.969213,-83.006059
 Montana St.,Amway Center Orlando,45.66381885,-111.0793057,28.53927385,-81.38400714
 Kansas St.,Greensboro Coliseum Greensboro,39.1974437,-96.5847249,36.0440568,-79.84686958
+Kansas St.,NRG Stadium Houston,39.1974437,-96.5847249,29.6848581,-95.41080145
+Kansas St.,Madison Square Garden,39.1974437,-96.5847249,40.7505045,-73.9934387
 Kansas St.,Nation Wide Arena Columbus,39.1974437,-96.5847249,39.969213,-83.006059
 Kansas St.,Amway Center Orlando,39.1974437,-96.5847249,28.53927385,-81.38400714
 Providence,Greensboro Coliseum Greensboro,41.8442938,-71.43548863,36.0440568,-79.84686958
+Providence,NRG Stadium Houston,41.8442938,-71.43548863,29.6848581,-95.41080145
+Providence,Madison Square Garden,41.8442938,-71.43548863,40.7505045,-73.9934387
 Providence,Nation Wide Arena Columbus,41.8442938,-71.43548863,39.969213,-83.006059
 Providence,Amway Center Orlando,41.8442938,-71.43548863,28.53927385,-81.38400714
 Kentucky,Greensboro Coliseum Greensboro,38.0333742,-84.5017758,36.0440568,-79.84686958
+Kentucky,NRG Stadium Houston,38.0333742,-84.5017758,29.6848581,-95.41080145
+Kentucky,Madison Square Garden,38.0333742,-84.5017758,40.7505045,-73.9934387
 Kentucky,Nation Wide Arena Columbus,38.0333742,-84.5017758,39.969213,-83.006059
 Kentucky,Amway Center Orlando,38.0333742,-84.5017758,28.53927385,-81.38400714
 Louisiana Lafayette,Amway Center Orlando,30.212,-92.0199,28.53927385,-81.38400714
+Louisiana Lafayette,NRG Stadium Houston,30.212,-92.0199,29.6848581,-95.41080145
+Louisiana Lafayette,Madison Square Garden,30.212,-92.0199,40.7505045,-73.9934387
 Louisiana Lafayette,Nation Wide Arena Columbus,30.212,-92.0199,39.969213,-83.006059
 Louisiana Lafayette,Greensboro Coliseum Greensboro,30.212,-92.0199,36.0440568,-79.84686958
 Tennessee,Amway Center Orlando,35.9542493,-83.9307395,28.53927385,-81.38400714
+Tennessee,Madison Square Garden,35.9542493,-83.9307395,40.7505045,-73.9934387
+Tennessee,NRG Stadium Houston,35.9542493,-83.9307395,29.6848581,-95.41080145
 Tennessee,Nation Wide Arena Columbus,35.9542493,-83.9307395,39.969213,-83.006059
 Tennessee,Greensboro Coliseum Greensboro,35.9542493,-83.9307395,36.0440568,-79.84686958
 Oral Roberts,Amway Center Orlando,36.0508252,-95.95213553,28.53927385,-81.38400714
+Oral Roberts,NRG Stadium Houston,36.0508252,-95.95213553,29.6848581,-95.41080145
+Oral Roberts,Madison Square Garden,36.0508252,-95.95213553,40.7505045,-73.9934387
 Oral Roberts,Nation Wide Arena Columbus,36.0508252,-95.95213553,39.969213,-83.006059
 Oral Roberts,Greensboro Coliseum Greensboro,36.0508252,-95.95213553,36.0440568,-79.84686958
-"	
-Duke ",Amway Center Orlando,36.0014258,-78.9382286,28.53927385,-81.38400714
-"	
-Duke ",Nation Wide Arena Columbus,36.0014258,-78.9382286,39.969213,-83.006059
-"	
-Duke ",Greensboro Coliseum Greensboro,36.0014258,-78.9382286,36.0440568,-79.84686958
-"	
-Florida Atlantic ",Nation Wide Arena Columbus,26.11940365,-80.14169191,39.969213,-83.006059
-"	
-Florida Atlantic ",Greensboro Coliseum Greensboro,26.11940365,-80.14169191,36.0440568,-79.84686958
-"	
-Florida Atlantic ",Amway Center Orlando,26.11940365,-80.14169191,28.53927385,-81.38400714
+Duke,Amway Center Orlando,36.0014258,-78.9382286,28.53927385,-81.38400714
+Duke,NRG Stadium Houston,36.0014258,-78.9382286,29.6848581,-95.41080145
+Duke,Madison Square Garden,36.0014258,-78.9382286,40.7505045,-73.9934387
+Duke,Nation Wide Arena Columbus,36.0014258,-78.9382286,39.969213,-83.006059
+Duke,Greensboro Coliseum Greensboro,36.0014258,-78.9382286,36.0440568,-79.84686958
+Florida Atlantic,Nation Wide Arena Columbus,26.11940365,-80.14169191,39.969213,-83.006059
+Florida Atlantic,NRG Stadium Houston,26.11940365,-80.14169191,29.6848581,-95.41080145
+Florida Atlantic,Madison Square Garden,26.11940365,-80.14169191,40.7505045,-73.9934387
+Florida Atlantic,Greensboro Coliseum Greensboro,26.11940365,-80.14169191,36.0440568,-79.84686958
+Florida Atlantic,Amway Center Orlando,26.11940365,-80.14169191,28.53927385,-81.38400714
 Memphis,Nation Wide Arena Columbus,35.1189387,-89.9372196,39.969213,-83.006059
+Memphis,NRG Stadium Houston,35.1189387,-89.9372196,29.6848581,-95.41080145
+Memphis,Madison Square Garden,35.1189387,-89.9372196,40.7505045,-73.9934387
 Memphis,Greensboro Coliseum Greensboro,35.1189387,-89.9372196,36.0440568,-79.84686958
 Memphis,Amway Center Orlando,35.1189387,-89.9372196,28.53927385,-81.38400714
 Fairleigh Dickinson,Nation Wide Arena Columbus,40.89807275,-74.03072114,39.969213,-83.006059
+Fairleigh Dickinson,NRG Stadium Houston,40.89807275,-74.03072114,29.6848581,-95.41080145
+Fairleigh Dickinson,UD Arena Dayton,40.89807275,-74.03072114,39.7393,-84.179967
+Fairleigh Dickinson,Madison Square Garden,40.89807275,-74.03072114,40.7505045,-73.9934387
 Fairleigh Dickinson,Greensboro Coliseum Greensboro,40.89807275,-74.03072114,36.0440568,-79.84686958
 Fairleigh Dickinson,Amway Center Orlando,40.89807275,-74.03072114,28.53927385,-81.38400714
-"	
-Texas Southern",Nation Wide Arena Columbus,29.7209058,-95.35962009,39.969213,-83.006059
-"	
-Texas Southern",Greensboro Coliseum Greensboro,29.7209058,-95.35962009,36.0440568,-79.84686958
-"	
-Texas Southern",Amway Center Orlando,29.7209058,-95.35962009,28.53927385,-81.38400714
+Texas Southern,Nation Wide Arena Columbus,29.7209058,-95.35962009,39.969213,-83.006059
+Texas Southern,UD Arena Dayton,29.7209058,-95.35962009,39.7393,-84.179967
+Texas Southern,NRG Stadium Houston,29.7209058,-95.35962009,29.6848581,-95.41080145
+Texas Southern,Madison Square Garden,29.7209058,-95.35962009,40.7505045,-73.9934387
+Texas Southern,Greensboro Coliseum Greensboro,29.7209058,-95.35962009,36.0440568,-79.84686958
+Texas Southern,Amway Center Orlando,29.7209058,-95.35962009,28.53927385,-81.38400714
 Purdue,Nation Wide Arena Columbus,40.43195815,-86.92391089,39.969213,-83.006059
+Purdue,NRG Stadium Houston,40.43195815,-86.92391089,29.6848581,-95.41080145
 Purdue,Greensboro Coliseum Greensboro,40.43195815,-86.92391089,36.0440568,-79.84686958
 Purdue,Amway Center Orlando,40.43195815,-86.92391089,28.53927385,-81.38400714
+Purdue,Madison Square Garden,40.43195815,-86.92391089,40.7505045,-73.9934387
