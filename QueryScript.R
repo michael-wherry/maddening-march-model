@@ -6,12 +6,6 @@ library(ggplot2)
 library(e1071)
 library(magrittr)
 
-# Make sure you set your working directory
-# An easy and temporary way to look through each csv
-fnames <- list.files(paste0(getwd(), "/Data"))
-csv <- lapply(paste0("Data/", fnames), read.csv)
-result <- do.call(rbind, csv)
-
 df_tournament <- read.csv("Data/MNCAATourneyDetailedResults.csv")
 
 Team_data <- read.csv("brosius data/Tournament Team Data (Including 2023).csv")
@@ -112,10 +106,4 @@ south_metrics <- south_coords %>%
   select(-YEAR,-ROUND, -TEAM.1,-Tlat, -Tlon, -Alat, -Alon) %>%
   left_join(coach_tenure, by = c("Team" = "TEAM")) %>%
   arrange(SEED)
-
-# Combine all regions into one data frame
-combined_team_dist <- rbind(east_coords, west_coords, midwest_coords, south_coords)
-
-# place in ascending order for power rankings
-power_rankings <- combined_team_dist[order(combined_team_dist$distance), ]
 
