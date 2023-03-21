@@ -16,6 +16,10 @@ df_tournament <- read.csv("Data/MNCAATourneyDetailedResults.csv")
 
 Team_data <- read.csv("brosius data/Tournament Team Data (Including 2023).csv")
 
+coach_tenure <- read.csv("Data/CoachTenure.csv")
+
+teams_id_name <- read.csv("Data/MTeams.csv")
+
 Current_team_data <- Team_data %>%
   filter(YEAR > 2022)
 
@@ -44,6 +48,7 @@ midwest_region <- Current_team_data[c(2,7,12,14,18,22,28,30,33,38,45,48,53,56,59
 
 west_region <- Current_team_data[c(3,8,10,13,19,24,27,29,35,37,41,50,52,55,61,64,43),] %>%
   arrange(SEED)
+
 #Create valid date column
 df_tournament <- df_tournament %>%
   mutate(Day = lubridate::day(as.Date(DayNum, origin = paste0(Season, "-01-01")))) %>%
@@ -74,6 +79,7 @@ east_metrics <- east_coords %>%
   mutate(distance = distance * 0.00062137) %>%
   left_join(east_region, by = c("Team" = "TEAM")) %>%
   select(-YEAR,-ROUND, -TEAM.1, -Tlat, -Tlon, -Alat, -Alon) %>%
+  left_join(coach_tenure, by = c("Team" = "TEAM")) %>%
   arrange(SEED)
 
 west_coords <- read.csv("Data/west region.csv")
@@ -83,6 +89,7 @@ west_metrics <- west_coords %>%
   mutate(distance = distance * 0.00062137) %>%
   left_join(west_region, by = c("Team" = "TEAM")) %>%
   select(-YEAR,-ROUND, -TEAM.1,-Tlat, -Tlon, -Alat, -Alon) %>%
+  left_join(coach_tenure, by = c("Team" = "TEAM")) %>%
   arrange(SEED)
 
 midwest_coords <- read.csv("Data/midwest region.csv")
@@ -92,6 +99,7 @@ midwest_metrics <- midwest_coords %>%
   mutate(distance = distance * 0.00062137) %>%
   left_join(midwest_region, by = c("Team" = "TEAM")) %>%
   select(-YEAR,-ROUND, -TEAM.1,-Tlat, -Tlon, -Alat, -Alon) %>%
+  left_join(coach_tenure, by = c("Team" = "TEAM")) %>%
   arrange(SEED)
 
 south_coords <- read.csv("Data/south region.csv")
@@ -102,6 +110,7 @@ south_metrics <- south_coords %>%
   arrange(distance) %>%
   left_join(south_region, by = c("Team" = "TEAM")) %>%
   select(-YEAR,-ROUND, -TEAM.1,-Tlat, -Tlon, -Alat, -Alon) %>%
+  left_join(coach_tenure, by = c("Team" = "TEAM")) %>%
   arrange(SEED)
 
 # Combine all regions into one data frame
