@@ -1,6 +1,7 @@
 library(tidyverse)
 library(geosphere)
 library(lubridate)
+library(caret)
 library(dplyr)
 library(ggplot2)
 library(e1071)
@@ -8,18 +9,18 @@ library(magrittr)
 
 df_tournament <- read.csv("Data/MNCAATourneyDetailedResults.csv")
 
-Team_data <- read.csv("brosius data/Tournament Team Data (Including 2023).csv")
+df_team_data <- read.csv("brosius data/Tournament Team Data (Including 2023).csv", colClasses = c("CHAMPION" = "factor"))
 
-coach_tenure <- read.csv("Data/CoachTenure.csv")
+df_coach_tenure <- read.csv("Data/CoachTenure.csv")
 
-teams_id_name <- read.csv("Data/MTeams.csv")
+df_teams_id_name <- read.csv("Data/MTeams.csv")
 
-Current_team_data <- Team_data %>%
+df_current_team_data <- df_team_data %>%
   filter(YEAR > 2022)
 
-kenpom_before_2023 <- Team_data %>%
+kenpom_before_2023 <- df_team_data %>%
   filter(YEAR < 2023)
-
+view(iris)
 set.seed(123) # Set seed for reproducibility
 train_index <- sample(nrow(kenpom_before_2023), 0.8 * nrow(kenpom_before_2023)) # 80% for training
 train_data <- kenpom_before_2023[train_index, ] # Training data
@@ -27,20 +28,23 @@ test_data <- kenpom_before_2023[-train_index, ] # Testing data
 x <- select(train_data, -KENPOM.ADJUSTED.EFFICIENCY) 
 y <- select(train_data, KENPOM.ADJUSTED.EFFICIENCY)
 
-svm_model <- svm(KENPOM.ADJUSTED.EFFICIENCY ~ ., data = train_data, kernel = "linear", cost = 10)
+df_team_data <- select(df_team_data, -YEAR, -ROUND, -TEAM, )
+svm_model <- svm(CHAMPION ~ ., data = df_team_data, kernel = "linear", cost = 10)
 
-predictions <- fitted(svm_model) 
+predictions <- predict(svm_model)
 
-east_region <- Current_team_data[c(4,6,11,15,17,23,25,32,34,39,46,49,54,57,62,63,68),] %>%
+confusionMatrix(predictions, df_team_data$CHAMPION)
+
+east_region <- df_current_team_data[c(4,6,11,15,17,23,25,32,34,39,46,49,54,57,62,63,68),] %>%
   arrange(SEED)
 
-south_region <- Current_team_data[c(1,5,9,16,20,21,26,31,36,40,44,47,51,58,60,67,66),] %>%
+south_region <- df_current_team_data[c(1,5,9,16,20,21,26,31,36,40,44,47,51,58,60,67,66),] %>%
   arrange(SEED)
 
-midwest_region <- Current_team_data[c(2,7,12,14,18,22,28,30,33,38,45,48,53,56,59,65,42),] %>%
+midwest_region <- df_current_team_data[c(2,7,12,14,18,22,28,30,33,38,45,48,53,56,59,65,42),] %>%
   arrange(SEED)
 
-west_region <- Current_team_data[c(3,8,10,13,19,24,27,29,35,37,41,50,52,55,61,64,43),] %>%
+west_region <- df_current_team_data[c(3,8,10,13,19,24,27,29,35,37,41,50,52,55,61,64,43),] %>%
   arrange(SEED)
 
 #Create valid date column
@@ -52,10 +56,10 @@ df_tournament <- df_tournament %>%
 
 #Key in team name with team id
 df_historical_data <- df_tournament %>%
-  left_join(teams_id_name, by = c("WTeamID" = "TeamID")) %>%
+  left_join(df_teams_id_name, by = c("WTeamID" = "TeamID")) %>%
   select(-FirstD1Season, -LastD1Season) %>%
   rename(WTeam = TeamName) %>%
-  left_join(teams_id_name, by = c("LTeamID" = "TeamID")) %>%
+  left_join(df_teams_id_name, by = c("LTeamID" = "TeamID")) %>%
   select(-FirstD1Season, -LastD1Season) %>%
   rename(LTeam = TeamName)
 
@@ -73,7 +77,7 @@ east_metrics <- east_coords %>%
   mutate(distance = distance * 0.00062137) %>%
   left_join(east_region, by = c("Team" = "TEAM")) %>%
   select(-YEAR,-ROUND, -TEAM.1, -Tlat, -Tlon, -Alat, -Alon) %>%
-  left_join(coach_tenure, by = c("Team" = "TEAM")) %>%
+  left_join(df_coach_tenure, by = c("Team" = "TEAM")) %>%
   arrange(SEED)
 
 west_coords <- read.csv("Data/west region.csv")
@@ -83,7 +87,7 @@ west_metrics <- west_coords %>%
   mutate(distance = distance * 0.00062137) %>%
   left_join(west_region, by = c("Team" = "TEAM")) %>%
   select(-YEAR,-ROUND, -TEAM.1,-Tlat, -Tlon, -Alat, -Alon) %>%
-  left_join(coach_tenure, by = c("Team" = "TEAM")) %>%
+  left_join(df_coach_tenure, by = c("Team" = "TEAM")) %>%
   arrange(SEED)
 
 midwest_coords <- read.csv("Data/midwest region.csv")
@@ -93,7 +97,7 @@ midwest_metrics <- midwest_coords %>%
   mutate(distance = distance * 0.00062137) %>%
   left_join(midwest_region, by = c("Team" = "TEAM")) %>%
   select(-YEAR,-ROUND, -TEAM.1,-Tlat, -Tlon, -Alat, -Alon) %>%
-  left_join(coach_tenure, by = c("Team" = "TEAM")) %>%
+  left_join(df_coach_tenure, by = c("Team" = "TEAM")) %>%
   arrange(SEED)
 
 south_coords <- read.csv("Data/south region.csv")
@@ -104,6 +108,7 @@ south_metrics <- south_coords %>%
   arrange(distance) %>%
   left_join(south_region, by = c("Team" = "TEAM")) %>%
   select(-YEAR,-ROUND, -TEAM.1,-Tlat, -Tlon, -Alat, -Alon) %>%
-  left_join(coach_tenure, by = c("Team" = "TEAM")) %>%
+  left_join(df_coach_tenure, by = c("Team" = "TEAM")) %>%
   arrange(SEED)
+
 
