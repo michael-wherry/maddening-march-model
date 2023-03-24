@@ -18,6 +18,10 @@ df_coach_tenure <- read.csv("Data/CoachTenure.csv")
 
 df_teams_id_name <- read.csv("Data/MTeams.csv")
 
+df_team_predictions <- read.csv("brosius data/2023 Game Data.csv")
+
+df_matchup_predictions <- read.csv("brosius data/round predictions.csv")
+
 df_current_team_data <- df_team_data %>%
   filter(YEAR > 2022) %>%
   select(-CHAMPION)
@@ -55,21 +59,25 @@ df_historical_data <- df_tournament %>%
 
 df_team_data_historical <- filter(df_team_data, YEAR != 2023)
 
-# Define the range of parameter values to search
-tune_params <- list(
-  kernel = c("linear", "polynomial", "radial", "sigmoid"),
-  gamma = c(0.1, 1, 5, 10),
-  cost = c(0.1, 1, 10, 100)
-)
+# # Define the range of parameter values to search
+ tune_params <- list(
+   kernel = c("linear", "polynomial", "radial", "sigmoid"),
+   gamma = c(0.1, 1, 5, 10),
+   cost = c(0.1, 1, 10, 100)
+ )
+ 
+ # Perform a grid search with 5-fold cross-validation
+ tune_result <- tune(
+   svm, 
+   CHAMPION ~ . -YEAR -SEED -ROUND -TEAM, 
+   data = df_team_data_historical,
+   ranges = tune_params,
+   tunecontrol = tune.control(cross = 5)
+ )
 
-# Perform a grid search with 5-fold cross-validation
-tune_result <- tune(
-  svm, 
-  CHAMPION ~ . -YEAR -SEED -ROUND -TEAM, 
-  data = df_team_data_historical,
-  ranges = tune_params,
-  tunecontrol = tune.control(cross = 5)
-)
+tune_result$best.parameters$kernel <- 'linear'
+tune_result$best.parameters$gamma <- .1
+tune_result$best.parameters$cost <- .1
 
 # Print the best parameters
 print(tune_result$best.parameters)
@@ -108,9 +116,8 @@ east_metrics <- east_coords %>%
   mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
   mutate(distance = distance * 0.00062137) %>%
   left_join(east_region, by = c("Team" = "TEAM")) %>%
-  select(-YEAR,-ROUND, -TEAM.1, -Tlat, -Tlon, -Alat, -Alon) %>%
-  left_join(df_coach_tenure, by = c("Team" = "TEAM")) %>%
-  arrange(SEED)
+  select(-YEAR,-ROUND, -Tlat, -Tlon, -Alat, -Alon) %>%
+  left_join(df_coach_tenure, by = c("Team" = "TEAM")) 
 
 west_coords <- read.csv("Data/west region.csv")
 west_metrics <- west_coords %>%
@@ -118,9 +125,8 @@ west_metrics <- west_coords %>%
   mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
   mutate(distance = distance * 0.00062137) %>%
   left_join(west_region, by = c("Team" = "TEAM")) %>%
-  select(-YEAR,-ROUND, -TEAM.1,-Tlat, -Tlon, -Alat, -Alon) %>%
-  left_join(df_coach_tenure, by = c("Team" = "TEAM")) %>%
-  arrange(SEED)
+  select(-YEAR,-ROUND,-Tlat, -Tlon, -Alat, -Alon) %>%
+  left_join(df_coach_tenure, by = c("Team" = "TEAM"))
 
 midwest_coords <- read.csv("Data/midwest region.csv")
 midwest_metrics <- midwest_coords %>%
@@ -128,9 +134,8 @@ midwest_metrics <- midwest_coords %>%
   mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
   mutate(distance = distance * 0.00062137) %>%
   left_join(midwest_region, by = c("Team" = "TEAM")) %>%
-  select(-YEAR,-ROUND, -TEAM.1,-Tlat, -Tlon, -Alat, -Alon) %>%
-  left_join(df_coach_tenure, by = c("Team" = "TEAM")) %>%
-  arrange(SEED)
+  select(-YEAR,-ROUND,-Tlat, -Tlon, -Alat, -Alon) %>%
+  left_join(df_coach_tenure, by = c("Team" = "TEAM"))
 
 south_coords <- read.csv("Data/south region.csv")
 south_metrics <- south_coords %>%
@@ -139,74 +144,83 @@ south_metrics <- south_coords %>%
   mutate(distance = distance * 0.00062137) %>%
   arrange(distance) %>%
   left_join(south_region, by = c("Team" = "TEAM")) %>%
-  select(-YEAR,-ROUND, -TEAM.1,-Tlat, -Tlon, -Alat, -Alon) %>%
-  left_join(df_coach_tenure, by = c("Team" = "TEAM")) %>%
-  arrange(SEED)
+  select(-YEAR,-ROUND,-Tlat, -Tlon, -Alat, -Alon) %>%
+  left_join(df_coach_tenure, by = c("Team" = "TEAM"))
 
-# # Append 1's and 0's to observation to indicate winners
-# df_unflipped <- slice_sample(df_historical_data, prop = 0.5, replace = F)
-# 
-# # Sets winning team metrics to posses a "R" (right) prefix instead
-# # Will be made the right column when joined back in
-# df_flipped <- df_historical_data %>%
-#   anti_join(df_unflipped, by = colnames(df_historical_data)) %>%
-#   rename_with(~ str_replace(.x, pattern = "^W", replacement = "R")) %>%
-#   mutate(Winner = 0) # 0 denotes that the right side team won
-# 
-# df_unflipped <- df_unflipped %>%
-#   rename_with(~ str_replace(.x, pattern = "^L", replacement = "R")) %>%
-#   rename_with(~ str_replace(.x, pattern = "^W", replacement = "L")) %>%
-#   mutate(Winner = 1) # 1 denotes that the left side team won
-# 
-# df_flagged_tournament <- df_unflipped %>%
-#   full_join(df_flipped, by = colnames(df_flipped)) %>%
-#   slice_sample(prop = 1) 
-# 
-# # Split the dataset into training and testing sets
-# 
-# df_training <- df_flagged_tournament %>%
-#   filter(Season != 2022)
-# 
-# df_testing <- df_flagged_tournament %>%
-#   filter(Season == 2022)
-# 
-# # Define the range of parameter values to search
-# tune_params <- list(
-#   kernel = c("linear", "polynomial", "radial", "sigmoid"),
-#   gamma = c(0.1, 1, 5, 10),
-#   cost = c(0.1, 1, 10, 100)
-# )
-# 
-# # Perform a grid search with 5-fold cross-validation
-# tune_result <- tune(
-#   svm, 
-#   Winner ~ . -Season -Day -LTeamID -RTeamID -LTeam -RTeam, 
-#   data = df_training,
-#   ranges = tune_params,
-#   tunecontrol = tune.control(cross = 5)
-# )
-# 
-# # Print the best parameters
-# print(tune_result$best.parameters)
-# 
-# # Train the SVM model with the best parameters
-# tournament_model <- svm(Winner ~ . -Season -DayNum -LTeamID -RTeamID -LTeam -RTeam, 
-#                         data = df_training, 
-#                         kernel = tune_result$best.parameters$kernel, 
-#                         gamma = tune_result$best.parameters$gamma, 
-#                         cost = tune_result$best.parameters$cost)
-# 
-# # Make predictions on the test set
-# predictions <- predict(tournament_model, df_testing %>% select(-Winner))
-# 
-# df_predictions <- data.frame(predictions)
-# 
-# df_comparison <- df_testing %>%
-#   select(Season, Day, LTeam, RTeam, Winner) %>%
-#   cbind(df_predictions)
-# 
-# # Calculate Mean Absolute Error (MAE)
-# mae <- mean(abs(as.numeric(predictions) - as.numeric(df_testing$Winner)))
-# 
-# # Print the MAE
-# print(mae)
+#Determine each individual matchup by the predictions from our model
+df_matchup_predictions <- df_matchup_predictions %>%
+  left_join(df_champions, by = c("TEAM" = "TEAM")) 
+  
+df_matchup_predictions_first_round <- df_matchup_predictions %>%
+  select(REGION, MATCHUP.KEY, GAME.KEY, TEAM, SEED, PREDICTIONS) %>%
+  arrange( REGION, MATCHUP.KEY, GAME.KEY) %>%
+  mutate(WINNER = PREDICTIONS > lead(PREDICTIONS))
+
+df_matchup_predictions_first_round[13,7] <- TRUE
+df_matchup_predictions_first_round[21,7] <- TRUE
+df_matchup_predictions_first_round[34,7] <- TRUE
+df_matchup_predictions_first_round[51,7] <- TRUE
+df_matchup_predictions_first_round[63,7] <- FALSE
+
+df_matchup_predictions_second_round <- df_matchup_predictions_first_round %>%
+  filter(WINNER == TRUE) %>%
+  arrange( REGION, MATCHUP.KEY) %>%
+  mutate(WINNER = PREDICTIONS > lead(PREDICTIONS))
+
+df_matchup_predictions_second_round[2,7] <- TRUE
+df_matchup_predictions_second_round[4,7] <- TRUE
+df_matchup_predictions_second_round[5,7] <- TRUE
+df_matchup_predictions_second_round[7,7] <- TRUE
+df_matchup_predictions_second_round[9,7] <- TRUE
+df_matchup_predictions_second_round[12,7] <- TRUE
+df_matchup_predictions_second_round[13,7] <- TRUE
+df_matchup_predictions_second_round[15,7] <- TRUE
+df_matchup_predictions_second_round[17,7] <- TRUE
+df_matchup_predictions_second_round[20,7] <- TRUE
+df_matchup_predictions_second_round[22,7] <- TRUE
+df_matchup_predictions_second_round[23,7] <- TRUE
+df_matchup_predictions_second_round[25,7] <- TRUE
+df_matchup_predictions_second_round[27,7] <- TRUE
+df_matchup_predictions_second_round[29,7] <- TRUE
+df_matchup_predictions_second_round[31,7] <- TRUE
+
+df_matchup_predictions_third_round <- df_matchup_predictions_second_round %>%
+  filter(WINNER == TRUE) %>%
+  arrange(REGION) %>%
+  mutate(WINNER = PREDICTIONS > lead(PREDICTIONS))
+
+df_matchup_predictions_third_round[2,7] <- TRUE
+df_matchup_predictions_third_round[4,7] <- TRUE
+df_matchup_predictions_third_round[5,7] <- TRUE
+df_matchup_predictions_third_round[8,7] <- TRUE
+df_matchup_predictions_third_round[9,7] <- TRUE
+df_matchup_predictions_third_round[11,7] <- TRUE
+df_matchup_predictions_third_round[14,7] <- TRUE
+df_matchup_predictions_third_round[16,7] <- TRUE
+
+df_matchup_predictions_fourth_round <- df_matchup_predictions_third_round %>%
+  filter(WINNER == TRUE) %>%
+  arrange(REGION) %>%
+  mutate(WINNER = PREDICTIONS > lead(PREDICTIONS))
+
+df_matchup_predictions_fourth_round[2,7] <- TRUE
+df_matchup_predictions_fourth_round[4,7] <- TRUE
+df_matchup_predictions_fourth_round[5,7] <- TRUE
+df_matchup_predictions_fourth_round[7,7] <- TRUE
+
+df_matchup_predictions_fifth_round <- df_matchup_predictions_fourth_round %>%
+  filter(WINNER == TRUE) %>%
+  arrange(GAME.KEY) %>%
+  mutate(WINNER = PREDICTIONS > lead(PREDICTIONS)) 
+
+df_matchup_predictions_fifth_round[1,7] <- TRUE
+df_matchup_predictions_fifth_round[4,7] <- TRUE
+
+df_matchup_predictions_sixth_round <- df_matchup_predictions_fifth_round %>%
+  filter(WINNER == TRUE) %>%
+  mutate(WINNER = PREDICTIONS > lead(PREDICTIONS))
+
+df_matchup_predictions_sixth_round[1,7] <- TRUE
+
+df_national_champion <- df_matchup_predictions_sixth_round %>%
+  filter(WINNER == TRUE)
