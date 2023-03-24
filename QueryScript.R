@@ -7,19 +7,20 @@ library(ggplot2)
 library(e1071)
 library(magrittr)
 
-
 set.seed(42)
 
 df_tournament <- read.csv("Data/MNCAATourneyDetailedResults.csv")
 
-df_team_data <- read.csv("brosius data/Tournament Team Data (Including 2023).csv", colClasses = c("CHAMPION" = "factor"))
+df_team_data <- read.csv("brosius data/Tournament Team Data (Including 2023).csv") %>%
+  select(-TEAM.1)
 
 df_coach_tenure <- read.csv("Data/CoachTenure.csv")
 
 df_teams_id_name <- read.csv("Data/MTeams.csv")
 
 df_current_team_data <- df_team_data %>%
-  filter(YEAR > 2022)
+  filter(YEAR > 2022) %>%
+  select(-CHAMPION)
 
 kenpom_before_2023 <- df_team_data %>%
   filter(YEAR < 2023)
@@ -52,32 +53,7 @@ df_historical_data <- df_tournament %>%
   select(-FirstD1Season, -LastD1Season, -WLoc) %>%
   rename(LTeam = TeamName)
 
-# Append 1's and 0's to observation to indicate winners
-df_unflipped <- slice_sample(df_historical_data, prop = 0.5, replace = F)
-
-# Sets winning team metrics to posses a "R" (right) prefix instead
-# Will be made the right column when joined back in
-df_flipped <- df_historical_data %>%
-  anti_join(df_unflipped, by = colnames(df_historical_data)) %>%
-  rename_with(~ str_replace(.x, pattern = "^W", replacement = "R")) %>%
-  mutate(Winner = 0) # 0 denotes that the right side team won
-
-df_unflipped <- df_unflipped %>%
-  rename_with(~ str_replace(.x, pattern = "^L", replacement = "R")) %>%
-  rename_with(~ str_replace(.x, pattern = "^W", replacement = "L")) %>%
-  mutate(Winner = 1) # 1 denotes that the left side team won
-
-df_flagged_tournament <- df_unflipped %>%
-  full_join(df_flipped, by = colnames(df_flipped)) %>%
-  slice_sample(prop = 1) 
-
-# Split the dataset into training and testing sets
-
-df_training <- df_flagged_tournament %>%
-  filter(Season != 2022)
-
-df_testing <- df_flagged_tournament %>%
-  filter(Season == 2022)
+df_team_data_historical <- filter(df_team_data, YEAR != 2023)
 
 # Define the range of parameter values to search
 tune_params <- list(
@@ -89,8 +65,8 @@ tune_params <- list(
 # Perform a grid search with 5-fold cross-validation
 tune_result <- tune(
   svm, 
-  Winner ~ . -Season -Day -LTeamID -RTeamID -LTeam -RTeam, 
-  data = df_training,
+  CHAMPION ~ . -YEAR -SEED -ROUND -TEAM, 
+  data = df_team_data_historical,
   ranges = tune_params,
   tunecontrol = tune.control(cross = 5)
 )
@@ -99,26 +75,25 @@ tune_result <- tune(
 print(tune_result$best.parameters)
 
 # Train the SVM model with the best parameters
-tournament_model <- svm(Winner ~ . -Season -DayNum -LTeamID -RTeamID -LTeam -RTeam, 
-                        data = df_training, 
+tournament_model <- svm(CHAMPION ~ . -YEAR -SEED -ROUND -TEAM, 
+                        data = df_team_data_historical,
                         kernel = tune_result$best.parameters$kernel, 
                         gamma = tune_result$best.parameters$gamma, 
                         cost = tune_result$best.parameters$cost)
 
 # Make predictions on the test set
-predictions <- predict(tournament_model, df_testing %>% select(-Winner))
+predictions <- predict(tournament_model, df_current_team_data)
 
 df_predictions <- data.frame(predictions)
 
-df_comparison <- df_testing %>%
-  select(Season, Day, LTeam, RTeam, Winner) %>%
-  cbind(df_predictions)
+df_champions <- df_current_team_data %>%
+  select(TEAM) %>%
+  cbind(df_predictions) %>%
+  arrange(desc(predictions)) %>%
+  rename("PREDICTIONS" = "predictions")
 
 # Calculate Mean Absolute Error (MAE)
 mae <- mean(abs(as.numeric(predictions) - as.numeric(df_testing$Winner)))
-
-# Print the MAE
-print(mae)
 
 # Arena Coordinates for Power Rankings
 arena_coords <- read.csv("Data/arena coordinates.csv")
@@ -168,4 +143,70 @@ south_metrics <- south_coords %>%
   left_join(df_coach_tenure, by = c("Team" = "TEAM")) %>%
   arrange(SEED)
 
-
+# # Append 1's and 0's to observation to indicate winners
+# df_unflipped <- slice_sample(df_historical_data, prop = 0.5, replace = F)
+# 
+# # Sets winning team metrics to posses a "R" (right) prefix instead
+# # Will be made the right column when joined back in
+# df_flipped <- df_historical_data %>%
+#   anti_join(df_unflipped, by = colnames(df_historical_data)) %>%
+#   rename_with(~ str_replace(.x, pattern = "^W", replacement = "R")) %>%
+#   mutate(Winner = 0) # 0 denotes that the right side team won
+# 
+# df_unflipped <- df_unflipped %>%
+#   rename_with(~ str_replace(.x, pattern = "^L", replacement = "R")) %>%
+#   rename_with(~ str_replace(.x, pattern = "^W", replacement = "L")) %>%
+#   mutate(Winner = 1) # 1 denotes that the left side team won
+# 
+# df_flagged_tournament <- df_unflipped %>%
+#   full_join(df_flipped, by = colnames(df_flipped)) %>%
+#   slice_sample(prop = 1) 
+# 
+# # Split the dataset into training and testing sets
+# 
+# df_training <- df_flagged_tournament %>%
+#   filter(Season != 2022)
+# 
+# df_testing <- df_flagged_tournament %>%
+#   filter(Season == 2022)
+# 
+# # Define the range of parameter values to search
+# tune_params <- list(
+#   kernel = c("linear", "polynomial", "radial", "sigmoid"),
+#   gamma = c(0.1, 1, 5, 10),
+#   cost = c(0.1, 1, 10, 100)
+# )
+# 
+# # Perform a grid search with 5-fold cross-validation
+# tune_result <- tune(
+#   svm, 
+#   Winner ~ . -Season -Day -LTeamID -RTeamID -LTeam -RTeam, 
+#   data = df_training,
+#   ranges = tune_params,
+#   tunecontrol = tune.control(cross = 5)
+# )
+# 
+# # Print the best parameters
+# print(tune_result$best.parameters)
+# 
+# # Train the SVM model with the best parameters
+# tournament_model <- svm(Winner ~ . -Season -DayNum -LTeamID -RTeamID -LTeam -RTeam, 
+#                         data = df_training, 
+#                         kernel = tune_result$best.parameters$kernel, 
+#                         gamma = tune_result$best.parameters$gamma, 
+#                         cost = tune_result$best.parameters$cost)
+# 
+# # Make predictions on the test set
+# predictions <- predict(tournament_model, df_testing %>% select(-Winner))
+# 
+# df_predictions <- data.frame(predictions)
+# 
+# df_comparison <- df_testing %>%
+#   select(Season, Day, LTeam, RTeam, Winner) %>%
+#   cbind(df_predictions)
+# 
+# # Calculate Mean Absolute Error (MAE)
+# mae <- mean(abs(as.numeric(predictions) - as.numeric(df_testing$Winner)))
+# 
+# # Print the MAE
+# print(mae)
