@@ -224,3 +224,12 @@ df_matchup_predictions_sixth_round[1,7] <- TRUE
 
 df_national_champion <- df_matchup_predictions_sixth_round %>%
   filter(WINNER == TRUE)
+
+write_csv(df_matchup_predictions_first_round,"Data/firstRound.csv")
+write_csv(df_matchup_predictions_second_round, "Data/secondRound.csv")
+write_csv(df_matchup_predictions_third_round, "Data/thirdRound.csv")
+write_csv(df_matchup_predictions_fourth_round, "Data/fourthRound.csv")
+write_csv(df_matchup_predictions_fifth_round, "Data/fifthRound.csv")
+write_csv(df_matchup_predictions_sixth_round, "Data/sixthRound.csv")
+write_csv(df_national_champion, "Data/nationalChampion.csv")
+write_csv(df_champions, "Data/predictionScores.csv")
