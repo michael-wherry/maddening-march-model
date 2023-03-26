@@ -5,3 +5,23 @@ This is a Machine Learning (ML) model designed to create a prediction on who can
 - Coach tenure for each school: A coach's experience and track record can significantly impact a team's performance and strategy during the games.
 - The distance from a team's campus to the stadium the match is being held: Travel distance can affect players' physical and mental states, potentially impacting their performance.
 - Previous scores from historical matchup data from 1985 to 2023: Examining historical data helps identify patterns, trends, and strengths or weaknesses of the participating teams over time.
+
+## Data Cleaning
+
+
+## Organization
+
+
+## Consolidation
+
+
+## Model Functions
+
+
+## Summary of Model Data
+
+
+## Data Analysis
+
+
+## Conclusion and Prediction from Model
