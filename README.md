@@ -1,27 +1,29 @@
 # Maddening-March-Model 🏀
-## Contributers
-* Michael Wherry
-* Logan Pearce
+## Contributors
 * Houssam Hallouch
+* Logan Pearce
 * Devon Storm
+* Michael Wherry
 
-## Introduction
+## Introduction ▶
 This is a Machine Learning (ML) model designed to create a prediction on who can potentially be the champions for the 2023 NCAA March Madness tournament. To create a prediction, the model will use data from a list of selected metrics. These metrics will include the following:
 
 1) Current seasons team stats: Analyzing past performance can offer valuable insights into a team's ability to perform well in the tournament.
-2) Historical seasons team stats from 2008 to 2023: Examining historical data helps identify patterns, trends, and strengths or weaknesses of the participating teams over time.
+2) Historical seasons team stats from 2008 to 2023: Examining historical data helps identify patterns, trends,strengths, and weaknesses of participating teams over time.
 
-## R Script Directory
+## R Script Directory 📜
+*The folowing are two R srcipts that were used to clean data, create matchup predictions, and visualization through the use of a Shiny application.*
 * Data cleaning and matchup predictions - QueryScript.R
 * Shiny app and visualizations - app.r
 
-## Dictionary
-*The following entries are the popular methods used amongst college basketball to calculate various team stats which are present in our work*
-* Kenpom: The purpose of this system is to show how strong a team would be if it played tonight, independent of injuries or emotional factors
-* Barttorvik: Very similar to Kenpom but different in that it attempts to account for the various factors that kenpom is independent to
+## Dictionary 📕
+*The following entries are the popular methods used amongst college basketball to calculate various team stats, which are present in our work.*
+* Kenpom: This system demostrates how strong a team would be if it played tonight, independent of injuries or emotional factors
+* Barttorvik: Very similar to Kenpom, but different in that it attempts to account for the various factors that Kenpom is independent from
 * Barthag: Represents the chance a team has of beating any average Division 1 team in the country
 
-## Data Cleaning
+## Data Cleaning 🧹
+*The following examples of code were used to perform the necessary data cleaning and organization to ensure the input data is relevent and optimized for use by the SVM. These processes include creating valid date columns, replacing team ID numbers with their respective names, and seperating out current season and past season statistics.*
 * Create a valid date column in our dataset
 ```r
 df_tournament <- df_tournament %>%
@@ -42,13 +44,14 @@ df_tournament <- df_tournament %>%
   rename(LTeam = TeamName)
   ```
   
-  * Seperate historical teams stats from current seasons team stats (Kenpom, Barttorvik, Barthag)
+  * Seperate historical teams stats from the current season's team stats (Kenpom, Barttorvik, Barthag)
   ```r
   df_team_data_historical <- filter(df_team_data, YEAR != 2023)
   ```
 
-## SVM Model Functions
-* Define the range of parameter values to search
+## SVM Model Functions 🧮
+*The following examples of code were used to organized the data to be utilized by our SVM. Once the data was selected, we needed to train the SVM with the data in order to accurately make predications within the given parameters. In addition, after the SVM was trained, we performed a test to ensure the predication process was performing as intended.*
+* Define the range of parameter values to search in the SVM
 ```r
  tune_params <- list(
    kernel = c("linear", "polynomial", "radial", "sigmoid"),
@@ -79,11 +82,11 @@ df_tournament <- df_tournament %>%
 predictions <- predict(tournament_model, df_current_team_data)
 ```
 
-## Model Predictions
+## Model Predictions 📝
 | Team | Prediction |
 |------|------------|
 | Alabama | 0.0119003369 |
-| Uconn | 0.0106910112 |
+| UConn | 0.0106910112 |
 | Creighton | 0.0106004192 |
 | Baylor | 0.0101194000 |
 | Marquette | 0.0100960477 |
@@ -93,9 +96,11 @@ predictions <- predict(tournament_model, df_current_team_data)
 | Houston | 0.0098073528 |
 | UCLA | 0.0097050529 |
 
-## March Madness 2023 Predictions
+## March Madness 2023 Predictions 📈
+*Once the SVM was trained and testing was completed, the model was tasked with generating predictions for all 6 rounds of the Championship. Each round, the model would narrow down the brackets based on comparing statistics from the two teams placed within the brackets by the model.*
+
 * To create the bracket within R studio we created keys within which to group teams (REGION, SEED, MATCHUP.KEY, GAME.KEY). 
-* To determine a winner of the matchup we compared the two teams models results and whosever was higher advanced to the next round
+* To determine a winner of the matchup, we compared the two teams models results and whicher team scored higher advanced to the next round
 ```r
 df_matchup_predictions <- df_matchup_predictions %>%
   left_join(df_champions, by = c("TEAM" = "TEAM")) 
@@ -123,21 +128,27 @@ df_matchup_predictions_first_round <- df_matchup_predictions %>%
 ### National Champions
 <img src="images/National Champions.png" alt="National Champions" width="1600" height="300">
 
-## ShinyApp
+## ShinyApp 📊
 
-# Conclusion
-* We used both historical and current Kenpom, Barttorvik, and Barthag stats to determine the following
-## Final Four
-1) Marquette
-2) Uconn
-3) Alabama
-4) Texas
+# Conclusion 🏀
+We used both historical and current Kenpom, Barttorvik, and Barthag stats to determine the following predictions using the SVM created:
+## Final Four Teams🥈
+1) **Marquette**
+2) **UConn**
+3) **Alabama**
+4) **Texas**
 
-## Championship Game
-1) Alabama
-2) Uconn
+The model predicts that Marquette, UConn, Alabama, and Texas will be the teams playing in the Final Four.
 
-## National Champions
+## Championship Game Teams 🏅
+1) **Alabama**
+2) **UConn**
+
+The model predicts that UConn and Alabama will be the teams at the Championship Game.
+
+## National Champions 🏆
 **Alabama**
+
+The model predicts that Alabama will be the 2023 National Champions.
 
 
