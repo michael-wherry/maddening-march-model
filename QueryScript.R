@@ -14,8 +14,6 @@ df_tournament <- read.csv("Data/MNCAATourneyDetailedResults.csv")
 df_team_data <- read.csv("brosius data/Tournament Team Data (Including 2023).csv") %>%
   select(-TEAM.1)
 
-df_coach_tenure <- read.csv("Data/CoachTenure.csv")
-
 df_teams_id_name <- read.csv("Data/MTeams.csv")
 
 df_team_predictions <- read.csv("brosius data/2023 Game Data.csv")
@@ -28,18 +26,6 @@ df_current_team_data <- df_team_data %>%
 
 kenpom_before_2023 <- df_team_data %>%
   filter(YEAR < 2023)
-
-east_region <- df_current_team_data[c(4,6,11,15,17,23,25,32,34,39,46,49,54,57,62,63,68),] %>%
-  arrange(SEED)
-
-south_region <- df_current_team_data[c(1,5,9,16,20,21,26,31,36,40,44,47,51,58,60,67,66),] %>%
-  arrange(SEED)
-
-midwest_region <- df_current_team_data[c(2,7,12,14,18,22,28,30,33,38,45,48,53,56,59,65,42),] %>%
-  arrange(SEED)
-
-west_region <- df_current_team_data[c(3,8,10,13,19,24,27,29,35,37,41,50,52,55,61,64,43),] %>%
-  arrange(SEED)
 
 #Create valid date column
 df_tournament <- df_tournament %>%
@@ -75,9 +61,9 @@ df_team_data_historical <- filter(df_team_data, YEAR != 2023)
    tunecontrol = tune.control(cross = 5)
  )
 
-tune_result$best.parameters$kernel <- 'linear'
-tune_result$best.parameters$gamma <- .1
-tune_result$best.parameters$cost <- .1
+#tune_result$best.parameters$kernel <- 'linear'
+#tune_result$best.parameters$gamma <- .1
+#tune_result$best.parameters$cost <- .1
 
 # Print the best parameters
 print(tune_result$best.parameters)
@@ -102,50 +88,6 @@ df_champions <- df_current_team_data %>%
 
 # Calculate Mean Absolute Error (MAE)
 mae <- mean(abs(as.numeric(predictions) - as.numeric(df_testing$Winner)))
-
-# Arena Coordinates for Power Rankings
-arena_coords <- read.csv("Data/arena coordinates.csv")
-
-# Team Coordinates for Power Rankings
-team_coords <- read.csv("Data/team coordinates.csv")
-
-#combined team and arena coords to calculate distance
-east_coords <- read.csv("Data/east region.csv")
-east_metrics <- east_coords %>%
-  dplyr::rowwise() %>%
-  mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
-  mutate(distance = distance * 0.00062137) %>%
-  left_join(east_region, by = c("Team" = "TEAM")) %>%
-  select(-YEAR,-ROUND, -Tlat, -Tlon, -Alat, -Alon) %>%
-  left_join(df_coach_tenure, by = c("Team" = "TEAM")) 
-
-west_coords <- read.csv("Data/west region.csv")
-west_metrics <- west_coords %>%
-  dplyr::rowwise() %>%
-  mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
-  mutate(distance = distance * 0.00062137) %>%
-  left_join(west_region, by = c("Team" = "TEAM")) %>%
-  select(-YEAR,-ROUND,-Tlat, -Tlon, -Alat, -Alon) %>%
-  left_join(df_coach_tenure, by = c("Team" = "TEAM"))
-
-midwest_coords <- read.csv("Data/midwest region.csv")
-midwest_metrics <- midwest_coords %>%
-  dplyr::rowwise() %>%
-  mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
-  mutate(distance = distance * 0.00062137) %>%
-  left_join(midwest_region, by = c("Team" = "TEAM")) %>%
-  select(-YEAR,-ROUND,-Tlat, -Tlon, -Alat, -Alon) %>%
-  left_join(df_coach_tenure, by = c("Team" = "TEAM"))
-
-south_coords <- read.csv("Data/south region.csv")
-south_metrics <- south_coords %>%
-  dplyr::rowwise() %>%
-  mutate(distance = distHaversine(c(Tlon, Tlat), c(Alon, Alat))) %>%
-  mutate(distance = distance * 0.00062137) %>%
-  arrange(distance) %>%
-  left_join(south_region, by = c("Team" = "TEAM")) %>%
-  select(-YEAR,-ROUND,-Tlat, -Tlon, -Alat, -Alon) %>%
-  left_join(df_coach_tenure, by = c("Team" = "TEAM"))
 
 #Determine each individual matchup by the predictions from our model
 df_matchup_predictions <- df_matchup_predictions %>%
