@@ -7,6 +7,7 @@ library(ggplot2)
 library(e1071)
 library(magrittr)
 
+
 set.seed(42)
 
 df_tournament <- read.csv("Data/MNCAATourneyDetailedResults.csv")
