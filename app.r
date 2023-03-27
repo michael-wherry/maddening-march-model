@@ -21,13 +21,20 @@ plot_theme <- ggdark::dark_theme_gray(base_family = "Fira Sans Condensed Light",
         legend.position = c(0.815, 0.27))
 
 #Data Frames for matchup predictions
-df_first_round <- read.csv('Data/firstRound.csv')
-df_second_round <- read.csv('Data/secondRound.csv')
-df_third_round <- read.csv('Data/thirdRound.csv')
-df_fourth_round <- read.csv('Data/fourthRound.csv')
-df_fifth_round <- read.csv('Data/fifthRound.csv')
-df_sixth_round <- read.csv('Data/sixthRound.csv')
-df_national_champion <- read.csv('Data/nationalChampion.csv')
+df_first_round <- read.csv('Data/firstRound.csv') %>%
+  mutate(UNIVERSAL.KEY = GAME.KEY)
+df_second_round <- read.csv('Data/secondRound.csv') %>%
+  mutate(UNIVERSAL.KEY = MATCHUP.KEY) # ???
+df_third_round <- read.csv('Data/thirdRound.csv') %>%
+  mutate(UNIVERSAL.KEY = MATCHUP.KEY) 
+df_fourth_round <- read.csv('Data/fourthRound.csv') %>%
+  mutate(UNIVERSAL.KEY = "A")
+df_fifth_round <- read.csv('Data/fifthRound.csv') %>%
+  mutate(UNIVERSAL.KEY = "A")
+df_sixth_round <- read.csv('Data/sixthRound.csv') %>%
+  mutate(UNIVERSAL.KEY = "A")
+df_national_champion <- read.csv('Data/nationalChampion.csv') %>%
+  mutate(UNIVERSAL.KEY = "A")
 
 #Possible dataframe for showing teams probability regardless of matchups
 #df_predictions <- read.csv("Data/predictionScores.csv")
@@ -103,8 +110,8 @@ ui<-fluidPage(
                        "Choose a team:",
                        choices = c("All", distinct(df_team_data, df_team_data$TEAM)),
                        selected = "All")),
-    #Figure out how to make the metric selection reactive for graphs showing teams stats over past couple years
-    #coulumn(8, 
+    
+    #column(8, 
           #  selectInput("metric",
                      #   "Choose a metric:",
                  #       )
@@ -193,9 +200,9 @@ server<-function(input,output){
   #geom_text used since the team names are too long for axis ticks.  Still overlap for round one selection
   #but after round one it looks good.  Still need to make columns color related to team colors.
   output$plot_05 <- renderPlot({
-    ggplot(selected_df(), aes(x = TEAM, y = PREDICTIONS, fill = TEAM)) +
-      geom_col(show.legend = F) +
-      geom_text(aes(x = TEAM, y = PREDICTIONS, label = TEAM)) +
+    ggplot(selected_df(), aes(x = UNIVERSAL.KEY, y = PREDICTIONS, fill = TEAM)) +
+      geom_bar(show.legend = F, position = "dodge", stat = "identity") +
+      geom_text(aes(label = TEAM)) +
       facet_wrap(~REGION) +
       plot_theme +
       theme(axis.title.x=element_blank(),
