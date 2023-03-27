@@ -202,5 +202,7 @@ The model predicts that UConn and Alabama will be the teams at the Championship 
 **Alabama**
 
 The model predicts that Alabama will be the 2023 National Champions.
+![HD-wallpaper-alabama-crimson-tide-american-football-team-red-background-alabama-crimson-tide-logo-grunge-art-ncaa-american-football-usa-alabama-crimson-tide-emblem](https://user-images.githubusercontent.com/118495098/228041181-a220802f-c37a-48c2-8b7c-38ea51c44204.jpg)
+
 
 
