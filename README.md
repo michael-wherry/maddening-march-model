@@ -11,6 +11,10 @@ This is a Machine Learning (ML) model designed to create a prediction on who can
 1) Current seasons team stats: Analyzing past performance can offer valuable insights into a team's ability to perform well in the tournament.
 2) Historical seasons team stats from 2008 to 2023: Examining historical data helps identify patterns, trends,strengths, and weaknesses of participating teams over time.
 
+A working version of this app has been published and hosted through Shinyapps.io, and is accessible via the link below.
+
+https://michael-wherry.shinyapps.io/maddening-march-model/
+
 ## R Script Directory 📜
 *The folowing are two R srcipts that were used to clean data, create matchup predictions, and visualization through the use of a Shiny application.*
 * Data cleaning and matchup predictions - QueryScript.R
@@ -171,7 +175,8 @@ df_first_round <- read.csv('Data/firstRound.csv') %>%
 ## ShinyApp 📊
 1) Our Shiny App is fully reactive and allows the user to explore how any one team metrics would stacks up against another
 * If the user wanted to see how Alabama's offense would stack up against Houston's offense
-<img src="images/Reactive Team Metric #1.png" alt="Alabama's Metric" width="1600" height="300">
+
+<img src="images/Reactive Team Metric 1.png" alt="Alabama's Metric" width="1600" height="300">
 
 <img src="images/Reactive Team Metric 2.png" alt="Houston's Metric" width="1600" height="300">
 
