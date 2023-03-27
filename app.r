@@ -7,7 +7,6 @@ library(dplyr)
 library(shiny)
 library(DT)
 
-
 df_team_data <- read.csv("brosius data/Tournament Team Data (Including 2023).csv")
 
 plot_theme <- ggdark::dark_theme_gray(base_family = "Fira Sans Condensed Light", base_size = 14) + 
@@ -36,6 +35,56 @@ df_national_champion <- read.csv('Data/nationalChampion.csv')
 column_names<-colnames(df_team_data) #for input selections 
 ui<-fluidPage(
   theme = shinytheme("darkly"),
+
+  # Sets text elements of data.table since the RStudio browser 
+  # uses old version of the web kit
+  tags$script(HTML({"
+    $(document).ready(function() {
+      var isRStudio = /rstudio/.test(navigator.userAgent.toLowerCase());
+      if (isRStudio) {
+        $('<style>.dataTables_wrapper .dataTables_info { color: white !important; }</style>').appendTo('head');
+      }
+    });
+  "})),
+
+  # Custom CSS for the DataTable to change font color
+  # I learned CSS for this...
+  tags$style(HTML({"
+    .dataTables_wrapper {
+      color: white;
+    }
+    table.dataTable thead th,
+    table.dataTable tfoot th,
+    .dataTables_filter label,
+    .dataTables_length label{
+      color: white;
+      font-weight: bold;
+    }
+    .dataTables_wrapper .dataTables_info {  # Updated selector with higher specificity
+    color: white;
+    font-weight: bold;
+    }
+    .dataTables_paginate .paginate_button {
+      background-color: #3c3c3c;
+      color: white;
+      border: none;
+    }
+    .dataTables_paginate .paginate_button.current,
+    .dataTables_paginate .paginate_button:hover {
+      background-color: #565656;
+      color: white;
+      border: none;
+    }
+    .dataTables_paginate .paginate_button.disabled {
+      background-color: #3c3c3c;
+      color: #999999;
+      border: none;
+      cursor: not-allowed;
+    }
+    table.dataTable thead tr {
+      background-color: #3c3c3c;
+    }
+  "})),
   
   titlePanel(title = "March Madness 2023 Predictions and Metrics"),
   fluidRow(
@@ -61,12 +110,16 @@ ui<-fluidPage(
                  #       )
       
   ),
+  
   #Allows users to track our predictions throughout every round
   column(12, plotOutput('plot_05')),
-  column(12,dataTableOutput("table_01")),
+  
+  column(12, DTOutput("table_01")),
+  
   #Allows users to compare metrics we used in our model
   column(6,plotOutput('plot_01')),
   column(6,plotOutput('plot_02')),
+  
   column(6,plotOutput('plot_03')),
   column(6,plotOutput('plot_04'))
   )
@@ -78,6 +131,7 @@ server<-function(input,output){
   df_filter_team02 <- reactive({
     subset(df_team_data, TEAM == input$team2)
   })
+  
   #Makes a reactive selection for dataframes so users can pick what round and results they want to see
   selected_df <- reactive({
     switch(input$round,
@@ -89,6 +143,7 @@ server<-function(input,output){
            "Championship Game" = df_sixth_round,
            "National Champion" = df_national_champion)
   })
+  
   #Make the following 4 plots reactive based on user input of metric for y axis where right now it is hard set to kenpom stats
   output$plot_01 <- renderPlot({
   plot_data <- df_filter_team01() %>%
@@ -149,11 +204,16 @@ server<-function(input,output){
   })
   #Table shows exact matchups and denotes which team wins and is interactive so you can search any for any team
   #that is still in the tournament during that given round
-  output$table_01<- renderDataTable(selected_df(), callback = JS(
-    "table.on( 'search.dt', function () {",
-    "Shiny.setInputValue( 'search', table.search() );",
-    "} );"
-  ))
+  output$table_01<- renderDT(
+                      selected_df() %>%
+                        datatable() %>%
+                        formatStyle(
+                          columns = colnames(selected_df()),
+                          backgroundColor = styleEqual(levels = c("All"), values = c("transparent")),
+                          color = "white",
+                          fontWeight = "bold"
+                    )
+                )
 }
 shinyApp(ui=ui, server=server)
 
