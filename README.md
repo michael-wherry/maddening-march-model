@@ -24,6 +24,8 @@ This is a Machine Learning (ML) model designed to create a prediction on who can
 
 ## Data Cleaning 🧹
 *The following examples of code were used to perform the necessary data cleaning and organization to ensure the input data is relevent and optimized for use by the SVM. These processes include creating valid date columns, replacing team ID numbers with their respective names, and seperating out current season and past season statistics.*
+1) Tournament Data
+
 * Create a valid date column in our dataset
 ```r
 df_tournament <- df_tournament %>%
@@ -32,6 +34,7 @@ df_tournament <- df_tournament %>%
   mutate(Date =  as.Date(paste(Season, Month, Day, sep = "/"))) %>%
   select(Date, Season, Month, Day, everything(), -DayNum)
   ```
+ 2) Historical Data
  
  * Left join team names into our dataset as opposed to using the teams ID
  ```r
@@ -43,6 +46,7 @@ df_tournament <- df_tournament %>%
   select(-FirstD1Season, -LastD1Season, -WLoc) %>%
   rename(LTeam = TeamName)
   ```
+  3) Data Filtering
   
   * Seperate historical teams stats from the current season's team stats (Kenpom, Barttorvik, Barthag)
   ```r
@@ -51,6 +55,9 @@ df_tournament <- df_tournament %>%
 
 ## SVM Model Functions 🧮
 *The following examples of code were used to organized the data to be utilized by our SVM. Once the data was selected, we needed to train the SVM with the data in order to accurately make predications within the given parameters. In addition, after the SVM was trained, we performed a test to ensure the predication process was performing as intended.*
+
+1) Set Parameters
+
 * Define the range of parameter values to search in the SVM
 ```r
  tune_params <- list(
@@ -59,6 +66,9 @@ df_tournament <- df_tournament %>%
    cost = c(0.1, 1, 10, 100)
  )
  ```
+ 
+ 2) Grid Search
+ 
  * Perform a grid search with 5-fold cross-validation
  ```r
   tune_result <- tune(
@@ -69,6 +79,9 @@ df_tournament <- df_tournament %>%
    tunecontrol = tune.control(cross = 5)
  )
  ```
+ 
+ 3) Model Training
+ 
  * Train the model with the best parameters
  ```r
  tournament_model <- svm(CHAMPION ~ . -YEAR -SEED -ROUND -TEAM, 
@@ -77,6 +90,8 @@ df_tournament <- df_tournament %>%
                         gamma = tune_result$best.parameters$gamma, 
                         cost = tune_result$best.parameters$cost)
 ```
+4) Model Testing
+
 * Make predictions on the test set
 ```r
 predictions <- predict(tournament_model, df_current_team_data)
