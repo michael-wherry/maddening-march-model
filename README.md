@@ -190,17 +190,17 @@ We used both historical and current Kenpom, Barttorvik, and Barthag stats to det
 3) **Alabama**
 4) **Texas**
 
-According to the model's forecast, the teams that are expected to advance to the Final Four are Marquette, UConn, Alabama, and Texas.
+The model predicts that Marquette, UConn, Alabama, and Texas will be the teams playing in the Final Four.
 
 ## Championship Game Teams 🏅
 1) **Alabama**
 2) **UConn**
 
-As per the model's projections, UConn and Alabama are envisaged to be the teams competing against each other at the Championship Game.
+The model predicts that UConn and Alabama will be the teams at the Championship Game.
 
 ## National Champions 🏆
 **Alabama**
 
-Based on the output of the model, it can be inferred that Alabama is expected to emerge as the 2023 National Champions, thus securing a highly esteemed and prestigious title in the field of sports.
+The model predicts that Alabama will be the 2023 National Champions.
 
 
