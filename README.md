@@ -114,17 +114,38 @@ predictions <- predict(tournament_model, df_current_team_data)
 ## March Madness 2023 Predictions 📈
 *Once the SVM was trained and testing was completed, the model was tasked with generating predictions for all 6 rounds of the Championship. Each round, the model would narrow down the brackets based on comparing statistics from the two teams placed within the brackets by the model.*
 
+1) Matchup Bracket
+
 * To create the bracket within R studio we created keys within which to group teams (REGION, SEED, MATCHUP.KEY, GAME.KEY). 
-* To determine a winner of the matchup, we compared the two teams models results and whicher team scored higher advanced to the next round
 ```r
 df_matchup_predictions <- df_matchup_predictions %>%
-  left_join(df_champions, by = c("TEAM" = "TEAM")) 
-  
+  left_join(df_champions, by = c("TEAM" = "TEAM"))
+```
+2) Macthups Per Round
+
+* To determine a winner of the matchup, we compared the two teams models results and whicher team scored higher advanced to the next round
+```r  
 df_matchup_predictions_first_round <- df_matchup_predictions %>%
   select(REGION, MATCHUP.KEY, GAME.KEY, TEAM, SEED, PREDICTIONS) %>%
   arrange( REGION, MATCHUP.KEY, GAME.KEY) %>%
   mutate(WINNER = PREDICTIONS > lead(PREDICTIONS))
 ```
+3) Write .csv File for Matchups during each Round
+
+* Create data frames for each round
+```r
+write_csv(df_matchup_predictions_first_round,"Data/firstRound.csv")
+write_csv(df_matchup_predictions_second_round, "Data/secondRound.csv")
+write_csv(df_matchup_predictions_third_round, "Data/thirdRound.csv")
+```
+4) Read .csv File for each Round
+
+* Use data frames for each matchup to determine the winning teams for each consecutive round, first round serving as an example
+```r
+df_first_round <- read.csv('Data/firstRound.csv') %>%
+  mutate(UNIVERSAL.KEY = GAME.KEY)
+```
+
 ### First Round Results
 <img src="images/First Round Winners.png" alt="First Round Winners" width="1600" height="300">
 
