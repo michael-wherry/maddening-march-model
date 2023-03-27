@@ -7,7 +7,8 @@ library(dplyr)
 library(shiny)
 library(DT)
 
-df_team_data <- read.csv("brosius data/Tournament Team Data (Including 2023).csv")
+df_team_data <- read.csv("brosius data/Tournament Team Data (Including 2023).csv") %>%
+  rename_with(~ gsub("..", "", .x, fixed = TRUE))
 
 plot_theme <- ggdark::dark_theme_gray(base_family = "Fira Sans Condensed Light", base_size = 14) + 
   theme(plot.title = element_text(family = "Fira Sans Condensed"),
@@ -20,24 +21,35 @@ plot_theme <- ggdark::dark_theme_gray(base_family = "Fira Sans Condensed Light",
         legend.key = element_blank(),
         legend.position = c(0.815, 0.27))
 
-#Data Frames for matchup predictions
+# Data Frames for matchup predictions
+# Universal key indicates who fights who for any given round
 df_first_round <- read.csv('Data/firstRound.csv') %>%
   mutate(UNIVERSAL.KEY = GAME.KEY)
 df_second_round <- read.csv('Data/secondRound.csv') %>%
-  mutate(UNIVERSAL.KEY = MATCHUP.KEY) # ???
-df_third_round <- read.csv('Data/thirdRound.csv') %>%
   mutate(UNIVERSAL.KEY = MATCHUP.KEY) 
+
+df_keys <- read.csv("brosius data/round predictions.csv")
+
+df_third_round <- read.csv('Data/thirdRound.csv')
+
+df_test <- df_third_round %>%
+  mutate(UNIVERSAL.KEY = as.factor(left_join(df_third_round, df_keys, by = "TEAM")[["SWEET.16"]])) %>%
+  group_by(UNIVERSAL.KEY) %>%
+  mutate(UNIVERSAL.KEY = c("A", "B"))
+
+left_join(df_third_round, df_keys, by = "TEAM")[["SWEET.16"]]
+df_third_round <- df_test
+
 df_fourth_round <- read.csv('Data/fourthRound.csv') %>%
   mutate(UNIVERSAL.KEY = "A")
 df_fifth_round <- read.csv('Data/fifthRound.csv') %>%
   mutate(UNIVERSAL.KEY = "A")
 df_sixth_round <- read.csv('Data/sixthRound.csv') %>%
   mutate(UNIVERSAL.KEY = "A")
-df_national_champion <- read.csv('Data/nationalChampion.csv') %>%
-  mutate(UNIVERSAL.KEY = "A")
+df_national_champion <- read.csv('Data/nationalChampion.csv')
 
-#Possible dataframe for showing teams probability regardless of matchups
-#df_predictions <- read.csv("Data/predictionScores.csv")
+# Possible dataframe for showing teams probability regardless of matchups
+# df_predictions <- read.csv("Data/predictionScores.csv")
 
 column_names<-colnames(df_team_data) #for input selections 
 ui<-fluidPage(
@@ -94,42 +106,42 @@ ui<-fluidPage(
   "})),
   
   titlePanel(title = "March Madness 2023 Predictions and Metrics"),
-  fluidRow(
-    column(2,
-           selectInput("round",
-                       'Choose a round:',
-                       choices = c("First Round", "Second Round", "Sweet 16", "Elite 8", 
-                                   "Final Four", "Championship Game", "National Champion"))),
-    column(4,
-           selectInput("team1",
-                       "Choose a team:",
-                       choices = c("All", distinct(df_team_data, df_team_data$TEAM)),
-                       selected = "All")),
-    column(6,
-           selectInput("team2",
-                       "Choose a team:",
-                       choices = c("All", distinct(df_team_data, df_team_data$TEAM)),
-                       selected = "All")),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("round",
+                  'Choose a round:',
+                  choices = c("First Round", "Second Round", "Sweet 16", "Elite 8", 
+                              "Final Four", "Championship Game", "National Champion")),
     
-    #column(8, 
-          #  selectInput("metric",
-                     #   "Choose a metric:",
-                 #       )
+      selectInput("team1",
+                "Choose a team:",
+                choices = distinct(df_team_data, df_team_data$TEAM),
+                selected = "Alabama"),
       
+      selectInput("team2",
+                  "Choose a team:",
+                  choices = distinct(df_team_data, df_team_data$TEAM),
+                  selected = "Houston"),
+      
+      selectInput("metric",
+                  "Choose a metric:",
+                  choices = colnames(select(df_team_data, -YEAR, -SEED, -TEAM, -ROUND, -CHAMPION, -TEAM.1)),
+                  selected = "KENPOM.ADJUSTED.OFFENSE")
+    ),
+    mainPanel(
+      fluidRow(
+        column(6,plotOutput('plot_01')),
+        column(6,plotOutput('plot_02'))
+      )
+    )
   ),
-  
-  #Allows users to track our predictions throughout every round
-  column(12, plotOutput('plot_05')),
-  
-  column(12, DTOutput("table_01")),
-  
-  #Allows users to compare metrics we used in our model
-  column(6,plotOutput('plot_01')),
-  column(6,plotOutput('plot_02')),
-  
-  column(6,plotOutput('plot_03')),
-  column(6,plotOutput('plot_04'))
+  fluidRow(
+    #Allows users to track our predictions throughout every round
+    column(12, plotOutput('plot_03')),
+    
+    column(12, DTOutput("table_01"))
   )
+)
 
 server<-function(input,output){
   df_filter_team01 <- reactive({
@@ -153,53 +165,37 @@ server<-function(input,output){
   
   #Make the following 4 plots reactive based on user input of metric for y axis where right now it is hard set to kenpom stats
   output$plot_01 <- renderPlot({
-  plot_data <- df_filter_team01() %>%
-    ggplot(aes(x = YEAR, y = KENPOM.ADJUSTED.OFFENSE)) +
+    metric_string <- str_to_title(gsub("\\.", " ", input$metric))
+    
+    ggplot(df_filter_team01(), aes_string(x = "YEAR", y = input$metric)) +
     geom_line() +
     geom_smooth() +
     ylim(60,130) +
     xlab("Season") +
-    ylab("Offensive Efficiency") +
-    ggtitle(paste0(input$team1, " Offensive Efficiency")) +
+    ylab(metric_string) +
+    ggtitle(paste(input$team1, metric_string, sep = "'s ")) +
     plot_theme
+  })
   
-  plot_data
-  })
   output$plot_02 <- renderPlot({
-    ggplot(df_filter_team01(), aes(x = YEAR, y = KENPOM.ADJUSTED.DEFENSE)) +
+    metric_string <- str_to_title(gsub("\\.", " ", input$metric))
+    
+    ggplot(df_filter_team02(), aes_string(x = "YEAR", y = input$metric)) +
       geom_line() +
       geom_smooth() +
       ylim(60,130) +
       xlab("Season") +
-      ylab("Defensive Efficiency") +
-      ggtitle(paste0(input$team1, " Defensive Efficiency"))+
+      ylab(metric_string) +
+      ggtitle(paste(input$team2, metric_string, sep = "'s ")) +
       plot_theme
   })
-  output$plot_03 <- renderPlot({
-    ggplot(df_filter_team02(), aes(x = YEAR, y = KENPOM.ADJUSTED.OFFENSE)) +
-      geom_line() +
-      geom_smooth() +
-      ylim(60,130) +
-      xlab("Season") +
-      ylab(" Offensive Efficiency") +
-      ggtitle(paste0(input$team2, " Offensive Efficiency")) +
-      plot_theme
-  })
-  output$plot_04 <- renderPlot({
-    ggplot(df_filter_team02(), aes(x = YEAR, y = KENPOM.ADJUSTED.DEFENSE)) +
-      geom_line() + 
-      geom_smooth() +
-      ylim(60,130) +
-      xlab("Season") +
-      ylab("Defensive Efficiency") +
-      ggtitle(paste0(input$team2, " Defensive Efficiency")) +
-      plot_theme
-  })
+  
   #First plot and table in shiny just out of order in script
   #Plot shows what teams are left in the round and their prediction score of advancing
+  #Clustering indicates matche-ups, where observations that are clustered together are opponents
   #geom_text used since the team names are too long for axis ticks.  Still overlap for round one selection
   #but after round one it looks good.  Still need to make columns color related to team colors.
-  output$plot_05 <- renderPlot({
+  output$plot_03 <- renderPlot({
     ggplot(selected_df(), aes(x = UNIVERSAL.KEY, y = PREDICTIONS, fill = TEAM)) +
       geom_bar(show.legend = F, position = "dodge", stat = "identity") +
       geom_text(aes(label = TEAM)) +
