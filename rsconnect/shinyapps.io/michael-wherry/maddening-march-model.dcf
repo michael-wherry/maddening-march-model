@@ -1,0 +1,14 @@
+name: maddening-march-model
+title: maddening-march-model
+username:
+account: michael-wherry
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 8681454
+bundleId: 7011796
+url: https://michael-wherry.shinyapps.io/maddening-march-model/
+when: 1679893471.98865
+lastSyncTime: 1679893471.98866
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: QueryScript.R|README.md

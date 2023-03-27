@@ -1,11 +1,35 @@
 library(shinythemes)
 library(tidyverse)
 library(lubridate)
+library(ggrepel)
 library(ggplot2)
 library(magick)
 library(dplyr)
 library(shiny)
 library(DT)
+
+team_colors <- c("Purdue" = "#CEA531", "Fairleigh Dickinson" = "#7D1623", "Texas Southern" = "#800000",
+                 "Memphis" = "#273BE2", "Florida Atlantic" = "#002D62", "Tennessee" = "#F77F00",
+                 "Louisiana Lafayette" = "#D50032", "Duke" = "#012169", "Oral Roberts" = "#002855",
+                 "Kansas St." = "#4F2683", "Montana St." = "#0C2340", "Kentucky" = "#0033A0",
+                 "Providence" = "#000000", "Marquette" = "#0033A0", "Vermont" = "#006438",
+                 "Michigan St." = "#18453B", "USC" = "#990000", "Houston" = "#C8102E",
+                 "Northern Kentucky" = "#FFCC00", "Iowa" = "#FFCD00", "Auburn" = "#0C2340",
+                 "Indiana" = "#990000", "Kent St." = "#002855", "Miami FL" = "#F47321",
+                 "Drake" = "#002D62", "Xavier" = "#0C2340", "Kennesaw St." = "#FFCC00",
+                 "Iowa St." = "#990000", "Mississippi St." = "#660000", "Pittsburgh" = "#003594",
+                 "Texas" = "#BF5700", "Colgate" = "#800000", "Texas A&M" = "#500000", "Penn St." = "#0C2340",
+                 "Alabama" = "#9E1B32", "Southeast Missouri St." = "#9D2235", "Texas A&M Corpus Chris" = "#003594",
+                 "Maryland" = "#CE1126", "West Virginia" = "#FFC600", "Virginia" = "#232D4B",
+                 "Furman" = "#4B0082", "San Diego St." = "#990000", "College of Charleston" = "#800000",
+                 "Baylor" = "#2C5E4F", "UC Santa Barbara" = "#002663", "Creighton" = "#002D62",
+                 "North Carolina St." = "#CC0000", "Arizona" = "#CC0033", "Princeton" = "#FF8C00",
+                 "Missouri" = "#F1B82D", "Utah St." = "#003DA5", "Kansas" = "#0051BA",
+                 "Howard" = "#002D62", "Arkansas" = "#9D2235", "Illinois" = "#E84A27",
+                 "Connecticut" = "#0C2340", "Iona" = "#800000", "Saint Mary's" = "#990000",
+                 "VCU" = "#FFCC00", "Gonzaga" = "#BA0C2F", "Grand Canyon" = "#46166B",
+                 "TCU" = "#4D1979", "Arizona St." = "#660021", "Nevada" = "#001b39", 
+                 "UCLA" = "#2774AE", "UNC Asheville" = "#7BAFD4", "Northwestern" = "#4E2A84", "Boise St." = "#0033A0")
 
 df_team_data <- read.csv("brosius data/Tournament Team Data (Including 2023).csv") %>%
   rename_with(~ gsub("..", "", .x, fixed = TRUE))
@@ -29,7 +53,7 @@ df_first_round <- read.csv('Data/firstRound.csv') %>%
   mutate(UNIVERSAL.KEY = GAME.KEY)
 
 df_second_round <- read.csv('Data/secondRound.csv') %>%
-  mutate(UNIVERSAL.KEY = MATCHUP.KEY) 
+  mutate(UNIVERSAL.KEY = MATCHUP.KEY)
 
 df_third_round <- read.csv('Data/thirdRound.csv') %>%
   mutate(UNIVERSAL.KEY = as.factor(left_join(., df_keys, by = "TEAM")[["SWEET.16"]])) %>%
@@ -43,10 +67,10 @@ df_fifth_round <- read.csv('Data/fifthRound.csv') %>%
   mutate(UNIVERSAL.KEY = "A")
 
 df_sixth_round <- read.csv('Data/sixthRound.csv') %>%
-  mutate(UNIVERSAL.KEY = "A")
+   mutate(UNIVERSAL.KEY = "A")
 
 df_national_champion <- read.csv('Data/nationalChampion.csv') %>%
-  mutate(UNIVERSAL.KEY = "A")
+   mutate(UNIVERSAL.KEY = "A")
 
 # Possible dataframe for showing teams probability regardless of matchups
 # df_predictions <- read.csv("Data/predictionScores.csv")
@@ -169,7 +193,7 @@ server<-function(input,output){
     
     ggplot(df_filter_team01(), aes_string(x = "YEAR", y = input$metric)) +
     geom_line() +
-    geom_smooth() +
+    geom_smooth(color = team_colors[input$team1]) +
     ylim(60,130) +
     xlab("Season") +
     ylab(metric_string) +
@@ -182,7 +206,7 @@ server<-function(input,output){
     
     ggplot(df_filter_team02(), aes_string(x = "YEAR", y = input$metric)) +
       geom_line() +
-      geom_smooth() +
+      geom_smooth(color = team_colors[input$team2]) +
       ylim(60,130) +
       xlab("Season") +
       ylab(metric_string) +
@@ -192,20 +216,24 @@ server<-function(input,output){
   
   #First plot and table in shiny just out of order in script
   #Plot shows what teams are left in the round and their prediction score of advancing
-  #Clustering indicates matche-ups, where observations that are clustered together are opponents
-  #geom_text used since the team names are too long for axis ticks.  Still overlap for round one selection
-  #but after round one it looks good.  Still need to make columns color related to team colors.
+  #Clustering indicates match-ups, where observations that are clustered together are opponents
   output$plot_03 <- renderPlot({
+    num_teams <- length(unique(selected_df()$TEAM))
+    text_angle <- ifelse(num_teams <= 16, 0, 90)
+    threshold <- mean(selected_df()$PREDICTIONS)
+    
     ggplot(selected_df(), aes(x = UNIVERSAL.KEY, y = PREDICTIONS, fill = TEAM)) +
       geom_bar(show.legend = F, position = "dodge", stat = "identity") +
-      geom_text(aes(label = TEAM)) +
-      facet_wrap(~REGION) +
+      scale_fill_manual(values = team_colors) +
+      geom_text(aes(label = TEAM, y = ifelse(PREDICTIONS > threshold, PREDICTIONS / 2, max(PREDICTIONS)/2)), position = position_dodge(width = 0.9), size = 4.1, fontface = "bold", angle = text_angle) +
+      facet_wrap(~REGION, scales = "free_x") +
       plot_theme +
       theme(axis.title.x=element_blank(),
             axis.text.x=element_blank(),
             axis.ticks.x=element_blank())
   })
-  #Table shows exact matchups and denotes which team wins and is interactive so you can search any for any team
+  
+  #Table shows exact match-ups and denotes which team wins and is interactive so you can search any for any team
   #that is still in the tournament during that given round
   output$table_01<- renderDT(
                       selected_df() %>%
