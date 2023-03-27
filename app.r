@@ -34,8 +34,8 @@ df_third_round <- read.csv('Data/thirdRound.csv')
 
 df_test <- df_third_round %>%
   mutate(UNIVERSAL.KEY = as.factor(left_join(df_third_round, df_keys, by = "TEAM")[["SWEET.16"]])) %>%
-  group_by(UNIVERSAL.KEY) %>%
-  mutate(UNIVERSAL.KEY = c("A", "B"))
+  group_by(REGION) %>%
+  mutate(UNIVERSAL.KEY = c("A", "A", "B", "B"))
 
 left_join(df_third_round, df_keys, by = "TEAM")[["SWEET.16"]]
 df_third_round <- df_test
