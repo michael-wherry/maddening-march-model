@@ -9,7 +9,11 @@
 This is a Machine Learning (ML) model designed to create a prediction on who can potentially be the champions for the 2023 NCAA March Madness tournament. To create a prediction, the model will use data from a list of selected metrics. These metrics will include the following:
 
 1) Current seasons team stats: Analyzing past performance can offer valuable insights into a team's ability to perform well in the tournament.
-2) Historical seasons team stats from 2008 to 2023: Examining historical data helps identify patterns, trends,strengths, and weaknesses of participating teams over time.
+2) Historical seasons team stats from 2008 to 2023: Examining historical data helps identify patterns, trends, strengths, and weaknesses of participating teams over time.
+
+A working version of this app has been published and hosted through Shinyapps.io, and is accessible via the link below.
+
+https://michael-wherry.shinyapps.io/maddening-march-model/
 
 ## R Script Directory 📜
 *The folowing are two R srcipts that were used to clean data, create matchup predictions, and visualization through the use of a Shiny application.*
