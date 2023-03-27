@@ -11,6 +11,10 @@ This is a Machine Learning (ML) model designed to create a prediction on who can
 1) Current seasons team stats: Analyzing past performance can offer valuable insights into a team's ability to perform well in the tournament.
 2) Historical seasons team stats from 2008 to 2023: Examining historical data helps identify patterns, trends,strengths, and weaknesses of participating teams over time.
 
+A working version of this app has been published and hosted through Shinyapps.io, and is accessible via the link below.
+
+https://michael-wherry.shinyapps.io/maddening-march-model/
+
 ## R Script Directory 📜
 *The folowing are two R srcipts that were used to clean data, create matchup predictions, and visualization through the use of a Shiny application.*
 * Data cleaning and matchup predictions - QueryScript.R
@@ -145,26 +149,38 @@ write_csv(df_matchup_predictions_third_round, "Data/thirdRound.csv")
 df_first_round <- read.csv('Data/firstRound.csv') %>%
   mutate(UNIVERSAL.KEY = GAME.KEY)
 ```
+## Results of our Model
 
-### First Round Results
-<img src="images/First Round Winners.png" alt="First Round Winners" width="1600" height="300">
+### First Round Teams
+<img src="images/First Round Results.png" alt="First Round Teams" width="1600" height="300">
 
-### Second Round Results
-<img src="images/Second Round Results.png" alt="Second Round Winners" width="1600" height="300">
+### Second Round Teams
+<img src="images/Second Round Results.png" alt="Second Round Teams" width="1600" height="300">
 
-### Sweet 16 Results
-<img src="images/Sweet 16 Winners.png" alt="Sweet 16 Winners" width="1600" height="300">
+### Sweet 16 Teams
+<img src="images/Sweet 16 Results.png" alt="Sweet 16 Teams" width="1600" height="300">
 
-### Elite 8 Winners
-<img src="images/Elite 8 Winners.png" alt="Elite 8 Winners" width="1600" height="300">
+### Elite 8 Teams
+<img src="images/Elite 8 Results.png" alt="Elite 8 Teams" width="1600" height="300">
 
-### Final Four Winners
-<img src="images/Final Four Winners.png" alt="Final Four Winners" width="1600" height="300">
+### Final Four Teams
+<img src="images/Final Four Results.png" alt="Final Four Teams" width="1600" height="300">
+
+### National Championship Teams
+<img src="images/Championship Game.png" alt="National Teams" width="1600" height="300">
 
 ### National Champions
-<img src="images/National Champions.png" alt="National Champions" width="1600" height="300">
+<img src="images/National Champion.png" alt="National Teams" width="1600" height="300">
 
 ## ShinyApp 📊
+1) Our Shiny App is fully reactive and allows the user to explore how any one team metrics would stacks up against another
+* If the user wanted to see how Alabama's offense would stack up against Houston's offense
+
+<img src="images/Reactive Team Metric 1.png" alt="Alabama's Metric" width="1600" height="300">
+
+<img src="images/Reactive Team Metric 2.png" alt="Houston's Metric" width="1600" height="300">
+
+
 
 # Conclusion 🏀
 We used both historical and current Kenpom, Barttorvik, and Barthag stats to determine the following predictions using the SVM created:
