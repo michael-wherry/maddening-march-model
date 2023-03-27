@@ -23,30 +23,30 @@ plot_theme <- ggdark::dark_theme_gray(base_family = "Fira Sans Condensed Light",
 
 # Data Frames for matchup predictions
 # Universal key indicates who fights who for any given round
+df_keys <- read.csv("brosius data/round predictions.csv")
+
 df_first_round <- read.csv('Data/firstRound.csv') %>%
   mutate(UNIVERSAL.KEY = GAME.KEY)
+
 df_second_round <- read.csv('Data/secondRound.csv') %>%
   mutate(UNIVERSAL.KEY = MATCHUP.KEY) 
 
-df_keys <- read.csv("brosius data/round predictions.csv")
-
-df_third_round <- read.csv('Data/thirdRound.csv')
-
-df_test <- df_third_round %>%
-  mutate(UNIVERSAL.KEY = as.factor(left_join(df_third_round, df_keys, by = "TEAM")[["SWEET.16"]])) %>%
+df_third_round <- read.csv('Data/thirdRound.csv') %>%
+  mutate(UNIVERSAL.KEY = as.factor(left_join(., df_keys, by = "TEAM")[["SWEET.16"]])) %>%
   group_by(REGION) %>%
   mutate(UNIVERSAL.KEY = c("A", "A", "B", "B"))
 
-left_join(df_third_round, df_keys, by = "TEAM")[["SWEET.16"]]
-df_third_round <- df_test
-
 df_fourth_round <- read.csv('Data/fourthRound.csv') %>%
   mutate(UNIVERSAL.KEY = "A")
+
 df_fifth_round <- read.csv('Data/fifthRound.csv') %>%
   mutate(UNIVERSAL.KEY = "A")
+
 df_sixth_round <- read.csv('Data/sixthRound.csv') %>%
   mutate(UNIVERSAL.KEY = "A")
-df_national_champion <- read.csv('Data/nationalChampion.csv')
+
+df_national_champion <- read.csv('Data/nationalChampion.csv') %>%
+  mutate(UNIVERSAL.KEY = "A")
 
 # Possible dataframe for showing teams probability regardless of matchups
 # df_predictions <- read.csv("Data/predictionScores.csv")
